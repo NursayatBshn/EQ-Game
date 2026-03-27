@@ -93,9 +93,9 @@ const story = {
         speaker: "Нурс (мысли)",
         text: "Просто игнорируй...",
         statChanges: { stress: 15, awareness: -10 },
-        choices: [{ text: "Прошло 10 минут...", next: "scene_2_2_1" }]
+        choices: [{ text: "Прошло 10 минут...", next: "scene_2_2_thoughts" }]
     },
-    "scene_2_2_1": {
+    "scene_2_2_thoughts": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
         speaker: "Нурс (мысли)",
@@ -269,13 +269,13 @@ function renderScene(sceneId) {
     const scene = story[sceneId];
     if (!scene) return;
 
-    // ИСПРАВЛЕНИЕ: Синхронизируем названия сцен для записи выбора
+    // Исправляем названия для записи выбора
     if (sceneId === 'end_fear') lastChoice = 'fear';
     if (sceneId === 'end_vision') lastChoice = 'vision';
     
-    // ИСПРАВЛЕНИЕ: Вызываем отправку данных, когда дошли до эпилога
+    // Если дошли до финального эпилога — показываем данные
     if (sceneId === 'end_fear_epilogue' || sceneId === 'end_vision_epilogue') {
-        triggerFinalActions();
+        showFinalResults();
     }
     
     // Спрайт и анимация появления
@@ -417,4 +417,51 @@ function triggerFinalActions() {
     }
     submitToLeaderboard(playerName);
     loadComments(); // Теперь эта функция существует
+}
+
+// Показываем оверлей и тянем данные
+async function showFinalResults() {
+    document.getElementById('dialogue-box').classList.add('hidden');
+    document.getElementById('results-overlay').classList.remove('hidden');
+
+    // 1. Отправляем статистику выбора
+    if (lastChoice) {
+        const stats = await sendFinalStat(lastChoice);
+        renderStatsBars(stats);
+    }
+
+    // 2. Грузим лидерборд
+    const lbData = await (await fetch(`${BACKEND_URL}/leaderboard`)).json();
+    renderLeaderboard(lbData);
+
+    // 3. Грузим комментарии
+    const comments = await (await fetch(`${BACKEND_URL}/comments`)).json();
+    renderComments(comments);
+}
+
+// Функции отрисовки (Helper functions)
+function renderStatsBars(data) {
+    const container = document.getElementById('stats-bars');
+    container.innerHTML = '';
+    const total = data.reduce((sum, item) => sum + item.count, 0);
+    data.forEach(item => {
+        const percent = Math.round((item.count / total) * 100);
+        const label = item.choiceId === 'vision' ? 'Путь Видения' : 'Путь Страха';
+        container.innerHTML += `<div>${label}: ${percent}% <div class="bar-bg"><div class="bar-fill" style="width:${percent}%; background:#ffcc00"></div></div></div>`;
+    });
+}
+
+function renderComments(data) {
+    const container = document.getElementById('comments-display');
+    container.innerHTML = data.map(c => `<div class="comment-item"><strong>${c.name}:</strong> ${c.text}</div>`).join('');
+}
+
+async function handleCommentSubmit() {
+    const name = document.getElementById('player-name-input').value || 'Аноним';
+    const text = document.getElementById('comment-text-input').value;
+    if (!text) return;
+
+    const updatedComments = await submitComment(name, text);
+    renderComments(updatedComments);
+    document.getElementById('comment-text-input').value = '';
 }

@@ -210,3 +210,66 @@ body {
     text-align: center;
     font-weight: bold;
 }
+
+.hidden { display: none !important; }
+
+#results-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 100;
+    padding: 40px;
+    color: white;
+}
+
+.results-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+#final-title {
+    color: #ffcc00;
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.results-column h3 {
+    border-bottom: 2px solid #ffcc00;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+#stats-bars div { margin-bottom: 15px; }
+
+#comments-display {
+    height: 200px;
+    overflow-y: auto;
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.comment-item {
+    font-size: 14px;
+    margin-bottom: 8px;
+    border-left: 3px solid #ffcc00;
+    padding-left: 10px;
+}
+
+.comment-input-area input, .comment-input-area textarea {
+    width: 100%;
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+    padding: 8px;
+    margin-bottom: 10px;
+}
