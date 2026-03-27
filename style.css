@@ -405,7 +405,7 @@ body {
     transform: scale(1.05);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px), (orientation: portrait) and (max-width: 1100px) {
     body {
         height: 100dvh;
         min-height: 100svh;
@@ -428,7 +428,7 @@ body {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (orientation: portrait) and (max-width: 1100px) {
     body {
         background: #000;
     }
@@ -452,9 +452,10 @@ body {
 
     #side-ui {
         top: calc(12px + env(safe-area-inset-top));
-        left: 12px;
-        right: 12px;
-        width: auto;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: min(460px, calc(100% - 24px));
         padding: 14px 14px 10px;
         border-left: none;
         border-top: 4px solid #ffcc00;
@@ -491,14 +492,15 @@ body {
     #character-layer {
         left: 0;
         right: 0;
-        bottom: clamp(150px, 24vh, 220px);
+        bottom: clamp(140px, 21vh, 230px);
         height: auto;
         display: flex;
         justify-content: center;
+        z-index: 14;
     }
 
     #character {
-        height: min(45vh, 360px);
+        height: min(43vh, 420px);
         max-width: 100%;
     }
 
@@ -508,8 +510,8 @@ body {
         transform: none;
         width: 100%;
         min-height: auto;
-        max-height: 38dvh;
-        padding: 24px 16px calc(16px + env(safe-area-inset-bottom));
+        max-height: min(34dvh, 260px);
+        padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
         background: linear-gradient(180deg, rgba(12, 12, 18, 0.98) 0%, rgba(22, 22, 32, 0.95) 100%);
         border-left: none;
         border-right: none;
@@ -518,14 +520,17 @@ body {
         box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.55);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        padding-left: 16px;
+        z-index: 24;
     }
 
     #speaker-name {
-        top: -16px;
-        left: 16px;
+        position: static;
+        display: inline-block;
+        margin-bottom: 10px;
         padding: 5px 12px;
         font-size: 14px;
+        border-radius: 6px;
+        box-shadow: none;
     }
 
     #dialogue-text {
@@ -626,20 +631,21 @@ body {
     }
 
     #character-layer {
-        bottom: clamp(180px, 28vh, 240px);
+        bottom: clamp(150px, 23vh, 210px);
     }
 
     #character {
-        height: min(42vh, 320px);
+        height: min(41vh, 300px);
     }
 
     #dialogue-box {
-        max-height: 42dvh;
-        padding: 22px 14px calc(14px + env(safe-area-inset-bottom));
+        max-height: min(35dvh, 240px);
+        padding: 14px 14px calc(14px + env(safe-area-inset-bottom));
     }
 
     #speaker-name {
-        left: 14px;
+        font-size: 13px;
+        margin-bottom: 8px;
     }
 
     #dialogue-text {
