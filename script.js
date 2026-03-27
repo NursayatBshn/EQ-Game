@@ -269,9 +269,14 @@ function renderScene(sceneId) {
     const scene = story[sceneId];
     if (!scene) return;
 
-    // (внутри функции renderScene)
-    if (sceneId === 'end_fear_prep') lastChoice = 'fear';
-    if (sceneId === 'end_vision_prep') lastChoice = 'vision';
+    // ИСПРАВЛЕНИЕ: Синхронизируем названия сцен для записи выбора
+    if (sceneId === 'end_fear') lastChoice = 'fear';
+    if (sceneId === 'end_vision') lastChoice = 'vision';
+    
+    // ИСПРАВЛЕНИЕ: Вызываем отправку данных, когда дошли до эпилога
+    if (sceneId === 'end_fear_epilogue' || sceneId === 'end_vision_epilogue') {
+        triggerFinalActions();
+    }
     
     // Спрайт и анимация появления
     const charLayer = document.getElementById('character-layer');
@@ -385,6 +390,17 @@ async function submitComment(playerName, commentText) {
     }
 }
 
+async function loadComments() {
+    try {
+        const response = await fetch(`${BACKEND_URL}/comments`);
+        const data = await response.json();
+        console.log("Комментарии загружены:", data);
+        // Тут можно добавить отрисовку в HTML
+    } catch (err) {
+        console.error("Ошибка загрузки комментариев:", err);
+    }
+}
+
 // Расчет итогового EQ счета
 function calculateEQScore() {
     // Формула: (Осознанность + Эмпатия + Мотивация) - Стресс
@@ -394,9 +410,11 @@ function calculateEQScore() {
 // Вызов при переходе к финалу
 function triggerFinalActions() {
     const finalScore = calculateEQScore();
-    const playerName = "Nursayat"; // В будущем можно добавить input для имени
+    const playerName = "Nursayat"; 
 
-    sendFinalStat(lastChoice); // Статистика выбора (fear или vision)
-    submitToLeaderboard(playerName, finalScore);
-    loadComments();
+    if (lastChoice) {
+        sendFinalStat(lastChoice);
+    }
+    submitToLeaderboard(playerName);
+    loadComments(); // Теперь эта функция существует
 }
