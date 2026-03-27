@@ -449,14 +449,6 @@ async function showFinalResults() {
     // 3. Грузим комментарии
     const comments = await (await fetch(`${BACKEND_URL}/comments`)).json();
     renderComments(comments);
-
-    try {
-        const response = await fetch(`${BACKEND_URL}/leaderboard`);
-        const topPlayers = await response.json();
-        renderLeaderboard(topPlayers);
-    } catch (err) {
-        console.error("Не удалось загрузить лидерборд", err);
-    }
 }
 
 // Функции отрисовки (Helper functions)

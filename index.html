@@ -13,6 +13,7 @@
         <div id="results-overlay" class="hidden">
             <div class="results-container">
                 <h2>Проект сдан! Результаты EQ</h2>
+                <div id="stats-bars" class="stats-bars"></div>
                 <div class="results-grid">
                     <div class="res-col">
                         <h3>Топ осознанных (AITU)</h3>
@@ -33,9 +34,11 @@
                     <div class="res-col">
                         <h3>Советы от студентов</h3>
                         <div id="comments-display"></div>
-                        <input type="text" id="player-name-input" placeholder="Имя">
-                        <textarea id="comment-text-input" placeholder="Твой совет..."></textarea>
-                        <button onclick="handleCommentSubmit()">Оставить след</button>
+                        <div class="comment-input-area">
+                            <input type="text" id="player-name-input" placeholder="Имя">
+                            <textarea id="comment-text-input" placeholder="Твой совет..."></textarea>
+                            <button class="restart-btn" onclick="handleCommentSubmit()">Оставить след</button>
+                        </div>
                     </div>
                 </div>
                 <button class="choice-btn" onclick="location.reload()">Играть снова</button>
