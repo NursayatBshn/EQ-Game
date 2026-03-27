@@ -441,6 +441,14 @@ async function showFinalResults() {
     // 3. Грузим комментарии
     const comments = await (await fetch(`${BACKEND_URL}/comments`)).json();
     renderComments(comments);
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/leaderboard`);
+        const topPlayers = await response.json();
+        renderLeaderboard(topPlayers);
+    } catch (err) {
+        console.error("Не удалось загрузить лидерборд", err);
+    }
 }
 
 // Функции отрисовки (Helper functions)
@@ -495,23 +503,41 @@ function showFinalOverlay() {
     if (resultsUI) resultsUI.classList.remove('hidden');
 }
 
+// Обновленная функция рестарта
 function restartGame() {
-    // 1. Сбрасываем статы до начальных значений
+    // Сброс всех характеристик
     stats = {
         stress: 70,
         awareness: 50,
         empathy: 50,
         motivation: 50
     };
-
-    // 2. Очищаем последний выбор
     lastChoice = '';
-
-    // 3. Скрываем оверлей результатов и показываем интерфейс игры
+    
+    // Переключение экранов
     document.getElementById('results-overlay').classList.add('hidden');
     document.getElementById('dialogue-box').classList.remove('hidden');
-
-    // 4. Запускаем стартовую сцену и обновляем полоски
+    
+    // Запуск сначала
     updateUI();
     renderScene("start");
+}
+
+// Функция для отрисовки лидерборда
+function renderLeaderboard(data) {
+    const container = document.getElementById('leaderboard-list');
+    if (!container) return;
+
+    if (data.length === 0) {
+        container.innerHTML = '<p class="loading-text">Стань первым в списке!</p>';
+        return;
+    }
+
+    container.innerHTML = data.map((player, index) => `
+        <div class="leaderboard-row">
+            <span>#${index + 1}</span>
+            <span>${player.name}</span>
+            <span>${player.score}</span>
+        </div>
+    `).join('');
 }
