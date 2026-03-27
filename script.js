@@ -374,3 +374,19 @@ async function submitComment(playerName, commentText) {
         console.error("Ошибка отправки комментария", err);
     }
 }
+
+// Расчет итогового EQ счета
+function calculateEQScore() {
+    // Формула: (Осознанность + Эмпатия + Мотивация) - Стресс
+    return (stats.awareness + stats.empathy + stats.motivation) - stats.stress;
+}
+
+// Вызов при переходе к финалу
+function triggerFinalActions() {
+    const finalScore = calculateEQScore();
+    const playerName = "Nursayat"; // В будущем можно добавить input для имени
+
+    sendFinalStat(lastChoice); // Статистика выбора (fear или vision)
+    submitToLeaderboard(playerName, finalScore);
+    loadComments();
+}

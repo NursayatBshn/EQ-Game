@@ -184,3 +184,29 @@ body {
     border-left: 8px solid #ffcc00;
     transform: translateX(10px); /* Кнопка "выезжает" при наведении */
 }
+
+.final-results-overlay {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid #ffcc00;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+.leaderboard-table, .comments-list {
+    max-height: 300px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+.stat-bubble {
+    background: #ffcc00;
+    color: #000;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
