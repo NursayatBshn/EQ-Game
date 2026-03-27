@@ -255,47 +255,51 @@ body {
     top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.95);
     z-index: 100;
-    padding: 40px;
+    padding: 28px 34px;
     color: white;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .results-container {
     max-width: 1100px;
+    height: 100%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .results-container h2 {
     color: #ffcc00;
-    font-size: 28px;
-    margin-bottom: 18px;
+    font-size: 24px;
+    margin-bottom: 12px;
     font-weight: 900;
 }
 
 .results-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 28px;
     align-items: start;
+    flex: 1;
 }
 
 .res-col h3 {
     border-bottom: 2px solid #ffcc00;
     padding-bottom: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     font-size: 18px;
 }
 
 .stats-bars {
-    margin-bottom: 24px;
+    margin-bottom: 18px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 204, 0, 0.35);
     border-radius: 10px;
-    padding: 16px;
+    padding: 12px 16px;
 }
 
 #stats-bars div {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 #stats-bars div:last-child {
@@ -303,11 +307,11 @@ body {
 }
 
 #comments-display {
-    height: 200px;
+    height: 145px;
     overflow-y: auto;
     background: rgba(255,255,255,0.05);
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -326,9 +330,14 @@ body {
     border: 1px solid #444;
     color: white;
     padding: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     border-radius: 6px;
     resize: vertical;
+}
+
+.comment-input-area textarea {
+    min-height: 48px;
+    max-height: 72px;
 }
 
 .hidden { display: none; }
@@ -342,12 +351,12 @@ body {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid #ffcc00;
     border-radius: 10px;
-    padding: 15px;
-    margin-top: 20px;
+    padding: 14px 16px;
+    margin-top: 12px;
 }
 
 #leaderboard-container {
-    min-height: 180px;
+    min-height: 120px;
 }
 
 .leaderboard-header {
@@ -363,7 +372,7 @@ body {
 .leaderboard-row {
     display: grid;
     grid-template-columns: 60px 1fr 100px;
-    padding: 8px 0;
+    padding: 7px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 14px;
     color: #f5f5f5;
@@ -380,12 +389,12 @@ body {
 }
 
 .restart-btn {
-    margin-top: 25px;
+    margin-top: 14px;
     background: #ffcc00;
     color: #000;
     font-weight: bold;
     border: none;
-    padding: 12px 25px;
+    padding: 10px 22px;
     cursor: pointer;
     border-radius: 5px;
     transition: 0.3s;
