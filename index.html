@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EQ Game: Путь Нурса</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="background"></div>
+        
+        <div id="character-layer">
+            <img id="character" src="" alt="Спрайт персонажа">
+        </div>
+
+        <div id="side-ui">
+            <h3>Состояние</h3>
+            <div class="stat-container">
+                <span>Stress</span>
+                <div class="bar-bg"><div id="bar-stress" class="bar-fill" style="background: #ff4757;"></div></div>
+            </div>
+            <div class="stat-container">
+                <span>Awareness</span>
+                <div class="bar-bg"><div id="bar-awareness" class="bar-fill" style="background: #2ed573;"></div></div>
+            </div>
+            <div class="stat-container">
+                <span>Empathy</span>
+                <div class="bar-bg"><div id="bar-empathy" class="bar-fill" style="background: #1e90ff;"></div></div>
+            </div>
+            <div class="stat-container">
+                <span>Motivation</span>
+                <div class="bar-bg"><div id="bar-motivation" class="bar-fill" style="background: #ffa502;"></div></div>
+            </div>
+        </div>
+
+        <div id="dialogue-box">
+            <div id="speaker-name">Нурс</div>
+            <div id="dialogue-text">Текст загружается...</div>
+            <div id="choices-container"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
