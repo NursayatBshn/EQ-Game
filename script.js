@@ -273,10 +273,12 @@ function renderScene(sceneId) {
     if (sceneId === 'end_fear') lastChoice = 'fear';
     if (sceneId === 'end_vision') lastChoice = 'vision';
     
-    // ВАЖНО: Если это эпилог, через 2 секунды показываем экран результатов
+    // ПЕРЕХОД К ФИНАЛУ: Если дошли до эпилога, активируем финальные действия
     if (sceneId === 'end_fear_epilogue' || sceneId === 'end_vision_epilogue') {
+        // Даем игроку 2 секунды дочитать текст, затем показываем результаты
         setTimeout(() => {
-            showFinalResults(); // Эту функцию мы добавим ниже
+            triggerFinalActions(); 
+            showFinalOverlay(); // Функция для показа окна с данными
         }, 2000);
     }
 
@@ -482,4 +484,34 @@ async function handleCommentSubmit() {
     const updatedComments = await submitComment(name, comment);
     renderComments(updatedComments);
     document.getElementById('comment-text-input').value = '';
+}
+
+// Показывает блок с результатами и скрывает игру
+function showFinalOverlay() {
+    const gameUI = document.getElementById('dialogue-box');
+    const resultsUI = document.getElementById('results-overlay');
+    
+    if (gameUI) gameUI.classList.add('hidden');
+    if (resultsUI) resultsUI.classList.remove('hidden');
+}
+
+function restartGame() {
+    // 1. Сбрасываем статы до начальных значений
+    stats = {
+        stress: 70,
+        awareness: 50,
+        empathy: 50,
+        motivation: 50
+    };
+
+    // 2. Очищаем последний выбор
+    lastChoice = '';
+
+    // 3. Скрываем оверлей результатов и показываем интерфейс игры
+    document.getElementById('results-overlay').classList.add('hidden');
+    document.getElementById('dialogue-box').classList.remove('hidden');
+
+    // 4. Запускаем стартовую сцену и обновляем полоски
+    updateUI();
+    renderScene("start");
 }
