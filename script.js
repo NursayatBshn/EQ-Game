@@ -480,18 +480,23 @@ function renderComments(data) {
 }
 
 async function handleCommentSubmit() {
-    const name = document.getElementById('player-name-input').value;
-    const comment = document.getElementById('comment-text-input').value;
+    const nameEl = document.getElementById('player-name-input');
+    const commentEl = document.getElementById('comment-text-input');
+
+    // Check if elements exist before accessing .value
+    if (!nameEl || !commentEl) {
+        console.error("Required input elements were not found in the DOM.");
+        return;
+    }
+
+    const name = nameEl.value;
+    const comment = commentEl.value;
     
-    console.log("Submit clicked:", name, comment);
-    
-    // Changed 'text' to 'comment' to match the variable defined above
     if (!comment) return;
 
-    // Changed 'text' to 'comment'
     const updatedComments = await submitComment(name, comment);
     renderComments(updatedComments);
-    document.getElementById('comment-text-input').value = '';
+    commentEl.value = '';
 }
 
 // Показывает блок с результатами и скрывает игру
@@ -523,21 +528,12 @@ function restartGame() {
     renderScene("start");
 }
 
-// Функция для отрисовки лидерборда
+// Ensure this function exists and is spelled correctly
 function renderLeaderboard(data) {
-    const container = document.getElementById('leaderboard-list');
+    const container = document.getElementById('leaderboard-container');
     if (!container) return;
-
-    if (data.length === 0) {
-        container.innerHTML = '<p class="loading-text">Стань первым в списке!</p>';
-        return;
-    }
-
-    container.innerHTML = data.map((player, index) => `
-        <div class="leaderboard-row">
-            <span>#${index + 1}</span>
-            <span>${player.name}</span>
-            <span>${player.score}</span>
-        </div>
+    
+    container.innerHTML = data.map(entry => `
+        <div class="lb-entry">${entry.name}: ${entry.score}</div>
     `).join('');
 }
