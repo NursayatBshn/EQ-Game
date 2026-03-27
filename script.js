@@ -279,7 +279,7 @@ function renderScene(sceneId) {
             showFinalResults(); // Эту функцию мы добавим ниже
         }, 2000);
     }
-    
+
     // Спрайт и анимация появления
     const charLayer = document.getElementById('character-layer');
     if (charLayer) {
@@ -474,10 +474,12 @@ async function handleCommentSubmit() {
     const comment = document.getElementById('comment-text-input').value;
     
     console.log("Submit clicked:", name, comment);
+    
+    // Changed 'text' to 'comment' to match the variable defined above
+    if (!comment) return;
 
-    if (!text) return;
-
-    const updatedComments = await submitComment(name, text);
+    // Changed 'text' to 'comment'
+    const updatedComments = await submitComment(name, comment);
     renderComments(updatedComments);
     document.getElementById('comment-text-input').value = '';
 }
