@@ -277,8 +277,7 @@ function renderScene(sceneId) {
     if (sceneId === 'end_fear_epilogue' || sceneId === 'end_vision_epilogue') {
         // Даем игроку 2 секунды дочитать текст, затем показываем результаты
         setTimeout(() => {
-            triggerFinalActions(); 
-            showFinalOverlay(); // Функция для показа окна с данными
+            showFinalResults();
         }, 2000);
     }
 
@@ -354,8 +353,10 @@ async function sendFinalStat(choice) {
 
         const data = await response.json();
         console.log("Статистика получена:", data);
+        return data;
     } catch (err) {
         console.error("Не удалось отправить статистику:", err.message);
+        return [];
     }
 }
 
@@ -372,9 +373,10 @@ async function submitToLeaderboard(playerName) {
         });
         const top10 = await response.json();
         console.log("ТОП 10 Игроков:", top10);
-        // Отрисовать таблицу на экране
+        return top10;
     } catch (err) {
         console.error("Ошибка лидерборда", err);
+        return [];
     }
 }
 
@@ -388,9 +390,10 @@ async function submitComment(playerName, commentText) {
         });
         const comments = await response.json();
         console.log("Живые комментарии:", comments);
-        // Отрисовать бегущую ленту или список
+        return comments;
     } catch (err) {
         console.error("Ошибка отправки комментария", err);
+        return [];
     }
 }
 
@@ -399,9 +402,10 @@ async function loadComments() {
         const response = await fetch(`${BACKEND_URL}/comments`);
         const data = await response.json();
         console.log("Комментарии загружены:", data);
-        // Тут можно добавить отрисовку в HTML
+        return data;
     } catch (err) {
         console.error("Ошибка загрузки комментариев:", err);
+        return [];
     }
 }
 
@@ -413,9 +417,8 @@ function calculateEQScore() {
 
 // Вызов при переходе к финалу
 function triggerFinalActions() {
-    const finalScore = calculateEQScore();
     const playerName = "Nursayat"; 
-
+    
     if (lastChoice) {
         sendFinalStat(lastChoice);
     }
@@ -425,14 +428,19 @@ function triggerFinalActions() {
 
 // Показываем оверлей и тянем данные
 async function showFinalResults() {
-    document.getElementById('dialogue-box').classList.add('hidden');
-    document.getElementById('results-overlay').classList.remove('hidden');
+    const dialogueBox = document.getElementById('dialogue-box');
+    const resultsOverlay = document.getElementById('results-overlay');
+    if (dialogueBox) dialogueBox.classList.add('hidden');
+    if (resultsOverlay) resultsOverlay.classList.remove('hidden');
+    const playerName = "Nursayat";
 
     // 1. Отправляем статистику выбора
     if (lastChoice) {
         const stats = await sendFinalStat(lastChoice);
         renderStatsBars(stats);
     }
+
+    await submitToLeaderboard(playerName);
 
     // 2. Грузим лидерборд
     const lbData = await (await fetch(`${BACKEND_URL}/leaderboard`)).json();
@@ -476,6 +484,11 @@ function renderStatsBars(data) {
 
 function renderComments(data) {
     const container = document.getElementById('comments-display');
+    if (!container) return;
+    if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = '<div class="comment-item">Комментариев пока нет</div>';
+        return;
+    }
     container.innerHTML = data.map(c => `<div class="comment-item"><strong>${c.name}:</strong> ${c.text}</div>`).join('');
 }
 
@@ -489,8 +502,8 @@ async function handleCommentSubmit() {
         return;
     }
 
-    const name = nameEl.value;
-    const comment = commentEl.value;
+    const name = nameEl.value.trim() || 'Аноним';
+    const comment = commentEl.value.trim();
     
     if (!comment) return;
 
@@ -520,8 +533,10 @@ function restartGame() {
     lastChoice = '';
     
     // Переключение экранов
-    document.getElementById('results-overlay').classList.add('hidden');
-    document.getElementById('dialogue-box').classList.remove('hidden');
+    const resultsOverlay = document.getElementById('results-overlay');
+    const dialogueBox = document.getElementById('dialogue-box');
+    if (resultsOverlay) resultsOverlay.classList.add('hidden');
+    if (dialogueBox) dialogueBox.classList.remove('hidden');
     
     // Запуск сначала
     updateUI();
@@ -532,8 +547,16 @@ function restartGame() {
 function renderLeaderboard(data) {
     const container = document.getElementById('leaderboard-container');
     if (!container) return;
-    
-    container.innerHTML = data.map(entry => `
-        <div class="lb-entry">${entry.name}: ${entry.score}</div>
+    if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = '<div class="lb-entry">Пока нет результатов</div>';
+        return;
+    }
+
+    container.innerHTML = data.map((entry, index) => `
+        <div class="leaderboard-row">
+            <span>${index + 1}</span>
+            <span>${entry.name}</span>
+            <span>${entry.score}</span>
+        </div>
     `).join('');
 }
