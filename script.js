@@ -269,6 +269,10 @@ function renderScene(sceneId) {
     const scene = story[sceneId];
     if (!scene) return;
 
+    // (внутри функции renderScene)
+    if (sceneId === 'end_fear_prep') lastChoice = 'fear';
+    if (sceneId === 'end_vision_prep') lastChoice = 'vision';
+    
     // Спрайт и анимация появления
     const charLayer = document.getElementById('character-layer');
     if (charLayer) {
@@ -324,7 +328,7 @@ window.onload = () => {
 };
 
 // URL твоего будущего бэкенда на Render (пока можно использовать localhost для тестов)
-const BACKEND_URL = 'http://localhost:3000/api'; 
+const BACKEND_URL = 'https://eq-game-tb0x.onrender.com/api';
 
 // Функция отправки статистики финала
 async function sendFinalStat(choice) {
