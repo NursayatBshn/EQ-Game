@@ -1,4 +1,4 @@
-// Базовые характеристики (Side UI)
+// Базовые характеристики (Side UI) - Стартовое состояние
 let stats = {
     stress: 70,
     awareness: 50,
@@ -6,229 +6,287 @@ let stats = {
     motivation: 50
 };
 
-// Функция обновления шкал на экране
+// Функция обновления шкал на экране с анимацией
 function updateUI() {
-    document.getElementById('bar-stress').style.width = stats.stress + '%';
-    document.getElementById('bar-awareness').style.width = stats.awareness + '%';
-    document.getElementById('bar-empathy').style.width = stats.empathy + '%';
-    document.getElementById('bar-motivation').style.width = stats.motivation + '%';
+    const types = ['stress', 'awareness', 'empathy', 'motivation'];
+    types.forEach(type => {
+        const bar = document.getElementById(`bar-${type}`);
+        const valText = document.getElementById(`${type}-val`);
+        if (bar) bar.style.width = stats[type] + '%';
+        if (valText) valText.innerText = stats[type] + '%';
+
+        // Добавляем пульсацию для высокого стресса
+        if (type === 'stress' && stats.stress > 80 && bar) {
+            bar.classList.add('stress-warning');
+        } else if (type === 'stress' && bar) {
+            bar.classList.remove('stress-warning');
+        }
+    });
 }
 
-// Сценарий игры (на основе нашего сюжета)
+// === ПОЛНЫЙ СЦЕНАРИЙ ИГРЫ (интеграция из Word) ===
 const story = {
     "start": {
-        bg: "assets/backgrounds/room_night.png", // Замени на имена своих файлов
+        bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
         speaker: "Нурс (мысли)",
-        text: "«Опять... Response: undefined. Как? Я же прописал все роуты. Этот Node.js меня доконает...»",
-        choices: [
-            { text: "Далее", next: "scene_1_noise" }
-        ]
+        text: "Этот Node.js меня доконает... \nПочему запрос возвращает undefined?",
+        choices: [{ text: "Далее", next: "scene_1_noise" }]
     },
+    
     "scene_1_noise": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Шум из коридора (Алихан)",
-        text: "«ДА КУДА ТЫ ФЛЕШКУ КИДАЕШЬ?! ЗАХОДИ С ПЛАНТА!»",
-        choices: [
-            { text: "Далее", next: "scene_1_choice" }
-        ]
+        speaker: "Шум из коридора",
+        text: "ДА КУДА ТЫ ФЛЕШКУ КИДАЕШЬ?! ЗАХОДИ С ПЛАНТА!",
+        choices: [{ text: "Далее", next: "scene_1_choice" }]
+    },
+    "scene_1_noise_1": {
+        bg: "assets/backgrounds/room_night.png",
+        sprite: "assets/sprites/nurs_tired.png",
+        speaker: "Нурс (мысли)",
+        text: "Баг в коде, завтра экзамен по дискретке, а тут еще этот шум из коридора...",
+        choices: [{ text: "Далее", next: "scene_1_choice" }]
     },
     "scene_1_choice": {
         bg: "assets/backgrounds/room_night.png",
-        sprite: "assets/sprites/nurs_angry.png", // Спрайт раздражения
+        sprite: "assets/sprites/nurs_angry.png", 
         speaker: "Нурс (мысли)",
-        text: "«Уровень стресса уже в 'красной зоне'. Если я сейчас не приму решение, мой мозг просто выдаст System Crash».",
+        text: "Баг в коде, завтра экзамен по дискретке, а тут еще этот шум из коридора...",
         choices: [
             { text: "[Агрессия] 'ТИХО! Вы что, совесть потеряли?'", next: "scene_2_1" },
             { text: "[Игнор] Надеть наушники и продолжить", next: "scene_2_2" },
             { text: "[Спокойно решить] Выйти и поговорить", next: "scene_2_3" }
         ]
     },
-    // Ветка 2.1: Агрессия
+
+    // --- ВЕТКА 2.1: Агрессия ---
     "scene_2_1": {
-        bg: "assets/backgrounds/corridor.png",
+        bg: "assets/backgrounds/room_alikhan.png", // Геймерская комната соседа
         sprite: "assets/sprites/nurs_angry.png",
         speaker: "Нурс (крича)",
-        text: "«ТИХО! Вы что, вообще совесть потеряли? Люди спят, а мне проект сдавать! Я сейчас коменданту пойду!»",
+        text: "ТИХО! Вы что, вообще совесть потеряли? Люди спят, а мне проект сдавать! Я сейчас коменданту пойду и на всех рапорт напишу!",
         statChanges: { stress: 25, awareness: -30, empathy: -20 },
-        choices: [
-            { text: "Слушать ответ Алихана", next: "scene_2_1_reaction" }
-        ]
+        choices: [{ text: "Ждать ответа", next: "scene_2_1_reaction" }]
     },
     "scene_2_1_reaction": {
-        bg: "assets/backgrounds/corridor.png",
-        sprite: "assets/sprites/alikhan.png", // Спрайт соседа
+        bg: "assets/backgrounds/room_alikhan.png",
+        sprite: "assets/sprites/alikhan_angry.png", // Алихан раздражен/агрессивен
         speaker: "Алихан (сосед)",
-        text: "«Ой, гляньте, староста проснулся. Че ты сразу угрожать начинаешь? Сказать нормально нельзя было?»",
-        choices: [
-            { text: "Вернуться в комнату", next: "scene_3_heavy" }
-        ]
+        text: "Ой, гляньте, староста проснулся. Че ты сразу угрожать начинаешь? Сказать нормально нельзя было?",
+        choices: [{ text: "Хлопнуть дверью и уйти", next: "scene_2_1_return" }]
     },
-    // Ветка 2.2: Игнор
+    "scene_2_1_return": {
+        bg: "assets/backgrounds/room_night.png",
+        sprite: "assets/sprites/nurs_panic.png", 
+        speaker: "Нурс (мысли)",
+        text: "Сердце колотится, руки трясутся. Наорал, а легче не стало. Теперь точно не смогу сосредоточиться на коде...",
+        choices: [{ text: "Пытаться кодить дальше...", next: "scene_3" }]
+    },
+
+    // --- ВЕТКА 2.2: Игнор ---
     "scene_2_2": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
         speaker: "Нурс (мысли)",
-        text: "«Просто игнорируй... Черт, я три раза перечитал одну и ту же строчку. Злость копится...»",
+        text: "Просто игнорируй...",
         statChanges: { stress: 15, awareness: -10 },
-        choices: [
-            { text: "Прошло 10 минут...", next: "scene_2_2_escalation" }
-        ]
+        choices: [{ text: "Прошло 10 минут...", next: "scene_2_2_1" }]
+    },
+    "scene_2_2_1": {
+        bg: "assets/backgrounds/room_night.png",
+        sprite: "assets/sprites/nurs_tired.png",
+        speaker: "Нурс (мысли)",
+        text: "Черт, я три раза перечитал одну и ту же строчку. Злость копится, я чувствую, как закипаю.",
+        choices: [{ text: "Далее", next: "scene_2_2_escalation" }]
     },
     "scene_2_2_escalation": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
         speaker: "Голос Алихана (приглушенно)",
-        text: "«ДА ТЫ КРЫСА! ХА-ХА-ХА!»",
+        text: "ДА ТЫ КРЫСА! КРЫСА НА МИДУ! ХА-ХА-ХА!",
         choices: [
-            { text: "[Сорваться] Вылететь в коридор", next: "scene_2_1" },
+            { text: "[Сорваться] Вылететь в коридор", next: "scene_2_2_angry" },
             { text: "[Сдаться] Я слишком устал...", next: "scene_2_2_1" }
         ]
     },
+    "scene_2_2_angry": {
+        bg: "assets/backgrounds/room_alikhan.png",
+        sprite: "assets/sprites/nurs_angry.png",
+        speaker: "Нурс (срываясь)",
+        text: "ТИХО! Я сейчас коменданту донесу, если не замолкнете! Я думал, вы сами поймете и успокоитесь, но вы продолжаете!",
+        statChanges: { stress: 20, awareness: -20 },
+        choices: [{ text: "Выслушать Алихана", next: "scene_2_1_reaction" }] // Перекидывает на реакцию агрессии
+    },
     "scene_2_2_1": {
         bg: "assets/backgrounds/room_dark.png",
-        sprite: "assets/sprites/nurs_tired.png",
+        sprite: "assets/sprites/nurs_tired.png", 
         speaker: "Нурс (мысли)",
-        text: "«Всё равно ничего не получится... Этот код бессмысленен. Мозг просто отказывается думать. Будь что будет.»",
-        statChanges: { stress: 20, motivation: -50 }, // Критическое падение
-        choices: [
-            { text: "Закрыть ноутбук", next: "scene_3_1" } // Сразу ведет к кошмару
-        ]
+        text: "Всё равно ничего не получится... Я слишком устал. Этот код бессмысленен, экзамен не сдать... Мозг просто отказывается думать. Будь что будет.",
+        statChanges: { stress: 20, motivation: -50 }, 
+        choices: [{ text: "Закрыть ноутбук", next: "scene_3_1" }] 
     },
-    // Ветка 2.3: Спокойствие
+
+    // --- ВЕТКА 2.3: Спокойное решение (Золотой путь) ---
     "scene_2_3": {
-        bg: "assets/backgrounds/corridor.png",
-        sprite: "assets/sprites/nurs_neutral.png",
+        bg: "assets/backgrounds/room_alikhan.png", // Комната соседей
+        sprite: "assets/sprites/nurs_neutral.png", 
         speaker: "Нурс (спокойно)",
-        text: "«Алихан, привет. Слушай, мешаешь Максату спать, а мне сосредоточиться. Надень наушники, пожалуйста.»",
+        text: "Алихан, привет. Слушай, мешаешь Максату спать, а мне сосредоточиться на проекте. Надень наушники, пожалуйста, катка же тише от этого не станет.",
         statChanges: { stress: -30, awareness: 30, empathy: 40 },
-        choices: [
-            { text: "Смотреть реакцию", next: "scene_2_3_reaction" }
-        ]
+        choices: [{ text: "Смотреть реакцию Алихана", next: "scene_2_3_reaction" }]
     },
     "scene_2_3_reaction": {
-        bg: "assets/backgrounds/corridor.png",
-        sprite: "assets/sprites/maksat.png",
-        speaker: "Максат (сосед)",
-        text: "«Рахмет, Нурс, реально спас мой сон...»",
-        choices: [
-            { text: "Вернуться к работе", next: "scene_3" }
-        ]
+        bg: "assets/backgrounds/room_alikhan.png",
+        sprite: "assets/sprites/alikhan_guilty.png", // Алихан смущен/чувствует вину
+        speaker: "Алихан",
+        text: "Ой, сорян, Нурс! Заигрались, реально. Сейчас сделаю.",
+        choices: [{ text: "Посмотреть на Максата", next: "scene_2_3_maksat" }]
     },
-    // Сцена 3: Внутренний выбор
+    "scene_2_3_maksat": {
+        bg: "assets/backgrounds/room_alikhan.png",
+        sprite: "assets/sprites/maksat.png", // Максат рад, что его спасли
+        speaker: "Максат (сосед)",
+        text: "Рахмет, Нурс, реально спас мой сон.",
+        choices: [{ text: "Вернуться в свою комнату", next: "scene_2_3_return" }]
+    },
+    "scene_2_3_return": {
+        bg: "assets/backgrounds/room_night.png",
+        sprite: "assets/sprites/nurs_neutral.png", 
+        speaker: "Нурс (мысли)",
+        text: "Фух. Сработало. Конфликт исчерпан, можно возвращаться к работе с чистой головой. Status: 200 OK. Когда ты говоришь с людьми по-человечески, они отвечают тем же.",
+        choices: [{ text: "Сесть за код", next: "scene_3" }]
+    },
+
+    // --- СЦЕНА 3: Внутренний выбор ---
     "scene_3": {
         bg: "assets/backgrounds/room_dark.png",
         sprite: "assets/sprites/nurs_tired.png",
         speaker: "Нурс (мысли)",
-        text: "«Тишина — это хорошо. Но глаза слипаются. До дедлайна пара часов. Что делать?»",
-        choices: [
-            { text: "Лечь спать (Положиться на удачу)", next: "scene_3_1" },
-            { text: "Завершить проект (Финальный рывок)", next: "scene_4" }
-        ]
-    },
-    "scene_3_heavy": {
-        bg: "assets/backgrounds/room_dark.png",
-        sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Нурс (мысли)",
-        text: "«Сердце колотится после ссоры. Энергии ноль. Если лягу сейчас — могу не проснуться. Если останусь — наделаю ошибок.»",
+        text: "Тишина - это хорошо. Но глаза уже слипаются. До дедлайна пара часов. Если лягу сейчас - могу не проснуться вовремя. Если останусь - боюсь наделать еще больше ошибок в логике. Что делать?.",
         choices: [
             { text: "Лечь спать", next: "scene_3_1" },
-            { text: "Попробовать завершить проект", next: "scene_4" }
+            { text: "Завершить проект", next: "scene_4" }
         ]
     },
-    // Сцена 3.1: Кошмар
+
+    // --- СЦЕНА 3.1: Петля Провала (Кошмар) ---
     "scene_3_1": {
         bg: "assets/backgrounds/nightmare_aitu.png",
-        sprite: "assets/sprites/professor.png",
+        sprite: "assets/sprites/professor.png", 
         speaker: "Преподаватель",
-        text: "«Башан Нурсаят, давайте, запускайте ваш проект. Мы ждем.»",
-        choices: [
-            { text: "Запустить код...", next: "scene_3_1_fail" }
-        ]
+        text: "Башан Нурсаят, давайте, запускайте ваш проект. Мы ждем.",
+        choices: [{ text: "Запустить код...", next: "scene_3_1_panic" }]
+    },
+    "scene_3_1_panic": {
+        bg: "assets/backgrounds/nightmare_aitu.png",
+        sprite: "assets/sprites/nurs_panic.png", 
+        speaker: "Нурс (мысли)",
+        text: "Нет, нет, там что, ошибка?! Надо было дописать ту функцию...",
+        choices: [{ text: "Смотреть на экран", next: "scene_3_1_fail" }]
     },
     "scene_3_1_fail": {
         bg: "assets/backgrounds/nightmare_aitu.png",
         sprite: "assets/sprites/nurs_panic.png",
         speaker: "Система",
-        text: "ВНИМАНИЕ: ОШИБКА КОДА. ВЫ ПОТЕРЯЛИ СТИПЕНДИЮ.",
-        choices: [
-            { text: "Проснуться в холодном поту!", next: "scene_3" } // Возврат к выбору
-        ]
+        text: "ВНИМАНИЕ: ВЫ ПОТЕРЯЛИ СТИПЕНДИЮ.",
+        statChanges: { stress: 20 },
+        choices: [{ text: "НЕТ! (Проснуться)", next: "scene_3_1_wakeup" }]
     },
-    // Сцена 4: Финальный выбор
+    "scene_3_1_wakeup": {
+        bg: "assets/backgrounds/room_dark.png",
+        sprite: "assets/sprites/nurs_tired.png",
+        speaker: "Нурс (просыпаясь)",
+        text: "Нет! Это был просто кошмар?.. Спать нельзя. Придется кодить.",
+        choices: [{ text: "Открыть IDE", next: "scene_4" }] 
+    },
+
+    // --- СЦЕНА 4: Финальный выбор мотивации ---
     "scene_4": {
         bg: "assets/backgrounds/room_dawn.png",
         sprite: "assets/sprites/nurs_focus.png",
         speaker: "Нурс (мысли)",
-        text: "«Осталось дописать последнюю функцию. Силы на исходе. Нужно найти причину, чтобы не закрыть ноутбук прямо сейчас.»",
+        text: "Так, ошибки в роутах исправлены. Осталось дописать последнюю функцию обработки данных. Но силы на исходе... \nНужно найти причину, чтобы не закрыть ноутбук прямо сейчас.",
         choices: [
-            { text: "[Страх] Сделать это ради сохранения стипендии", next: "end_fear" },
-            { text: "[Видение] Сделать это, чтобы стать крутым разработчиком", next: "end_vision" }
+            { text: "Ради стипендии и выживания", next: "end_fear" },
+            { text: "Ради будущей карьеры бэкендера", next: "end_vision" }
         ]
     },
+
+    // --- ФИНАЛЫ ---
     "end_fear": {
         bg: "assets/backgrounds/room_parents.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Итог",
-        text: "Проект готов. Нурс сохранил стипендию, но чувствует себя полностью выгоревшим и опустошенным. Работа на страхе не длится вечно.",
+        speaker: "Внутренние мысли Нурса",
+        text: "Так, соберись. Если я завалю этот проект, прощай стипендия. Родители расстроятся, придется экономить на всем. Надо доделать это ради выживания. Пиши, просто пиши!... Проект готов, но Нурс чувствует полное опустошение.",
         statChanges: { stress: 15, motivation: 20 },
-        choices: [
-            { text: "Конец игры", next: "start" }
-        ]
+        choices: [{ text: "Играть заново", next: "start" }]
     },
     "end_vision": {
         bg: "assets/backgrounds/room_career.png",
-        sprite: "assets/sprites/nurs_happy.png",
-        speaker: "Итог",
-        text: "Билд успешен! Нурс чувствует профессиональный подъем. Каждая решенная задача делает его на шаг ближе к мечте. EQ помог ему сохранить фокус.",
+        sprite: "assets/sprites/nurs_happy.png", 
+        speaker: "Внутренние мысли Нурса",
+        text: "Этот баг — отличный вызов. Каждая такая решенная задача делает меня круче как бэкенд-разработчика. Я хочу понимать, как это работает, чтобы в будущем создавать реально мощные системы. Погнали!... Проект готов идеально, Нурс на подъеме.",
         statChanges: { stress: -20, motivation: 50 },
-        choices: [
-            { text: "Конец игры", next: "start" }
-        ]
+        choices: [{ text: "Играть заново", next: "start" }]
     }
 };
 
 // Функция отрисовки сцены
 function renderScene(sceneId) {
     const scene = story[sceneId];
+    if (!scene) return;
+
+    // Спрайт и анимация появления
+    const charLayer = document.getElementById('character-layer');
+    if (charLayer) {
+        charLayer.style.opacity = '0';
+        charLayer.style.transform = 'translateY(10px)';
+    }
     
-    // Обновляем фон и спрайт (если указаны заглушки, они не сломают код, просто будет пустое место)
-    if (scene.bg) {
-        document.getElementById('background').style.backgroundImage = `url('${scene.bg}')`;
-    }
-    if (scene.sprite) {
-        document.getElementById('character').src = scene.sprite;
-    }
+    setTimeout(() => {
+        const bgElement = document.getElementById('background');
+        if (bgElement) bgElement.style.backgroundImage = `url('${scene.bg}')`;
+        
+        const charImg = document.getElementById('character');
+        if (charImg) charImg.src = scene.sprite;
+        
+        if (charLayer) {
+            charLayer.style.opacity = '1';
+            charLayer.style.transform = 'translateY(0)';
+        }
+    }, 150);
 
-    // Обновляем текст
-    document.getElementById('speaker-name').innerText = scene.speaker;
-    document.getElementById('dialogue-text').innerText = scene.text;
+    // Текст
+    const speakerEl = document.getElementById('speaker-name');
+    const textEl = document.getElementById('dialogue-text');
+    if (speakerEl) speakerEl.innerText = scene.speaker;
+    if (textEl) textEl.innerText = scene.text;
 
-    // Обновляем статы, если они меняются в этой сцене
+    // Статы
     if (scene.statChanges) {
         for (let key in scene.statChanges) {
-            stats[key] += scene.statChanges[key];
-            // Ограничиваем значения от 0 до 100
-            if (stats[key] > 100) stats[key] = 100;
-            if (stats[key] < 0) stats[key] = 0;
+            stats[key] = Math.max(0, Math.min(100, stats[key] + scene.statChanges[key]));
         }
         updateUI();
     }
 
-    // Рендерим кнопки выбора
+    // Кнопки
     const choicesContainer = document.getElementById('choices-container');
-    choicesContainer.innerHTML = ''; // Очищаем старые кнопки
-    
-    scene.choices.forEach(choice => {
-        const btn = document.createElement('button');
-        btn.className = 'choice-btn';
-        btn.innerText = choice.text;
-        btn.onclick = () => renderScene(choice.next);
-        choicesContainer.appendChild(btn);
-    });
+    if (choicesContainer) {
+        choicesContainer.innerHTML = '';
+        scene.choices.forEach(choice => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerText = choice.text;
+            btn.onclick = () => renderScene(choice.next);
+            choicesContainer.appendChild(btn);
+        });
+    }
 }
 
-// Запуск игры
-updateUI();
-renderScene("start");
+// Старт игры
+window.onload = () => {
+    renderScene("start");
+    updateUI();
+};

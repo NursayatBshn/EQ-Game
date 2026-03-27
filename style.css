@@ -1,12 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Montserrat', sans-serif; /* Подключаем современный шрифт */
 }
 
 body {
-    background-color: #121212;
+    background-color: #050505;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,12 +17,12 @@ body {
 
 #game-container {
     position: relative;
-    width: 960px;
-    height: 540px; /* Пропорции 16:9 */
+    width: 1280px; /* Делаем разрешение HD */
+    height: 720px;
     background-color: #000;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    border: 2px solid #333;
+    box-shadow: 0 0 50px rgba(0,0,0,1);
+    border: 2px solid #222;
 }
 
 #background {
@@ -29,117 +31,156 @@ body {
     height: 100%;
     background-size: cover;
     background-position: center;
-    transition: background-image 0.5s ease-in-out;
+    transition: background-image 0.8s ease-in-out;
 }
 
-/* === ИЗМЕНЕНИЯ ЗДЕСЬ: Персонаж слева === */
+/* === ПЕРСОНАЖ: Выносим на ПЕРЕДНИЙ план === */
 #character-layer {
     position: absolute;
-    bottom: -20px;
-    left: 20px; /* Прижимаем к левому краю с небольшим отступом */
-    height: 90%; /* Сделали спрайт чуть крупнее */
-    z-index: 5;
-    /* Мы удалили transform: translateX(-50%); который центрировал его */
+    bottom: -336px;
+    left: 50px;
+    height: 100%;
+    z-index: 20;
+    pointer-events: none;
 }
 
 #character {
-    height: 100%;
+    height: 50%;
     object-fit: contain;
-    transition: opacity 0.3s ease;
-    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.5)); /* Добавили легкую тень для объема */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    /* Мощная тень скроет неровности белой обводки */
+    filter: drop-shadow(15px 15px 25px rgba(0,0,0,0.9)); 
 }
 
-/* Side UI (остается в правом верхнем углу) */
+/* === SIDE UI (Шкалы): Стиль киберпанк/Hades === */
 #side-ui {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.75);
-    padding: 15px;
-    border-radius: 8px;
+    top: 30px;
+    right: 30px;
+    background: linear-gradient(90deg, rgba(15,15,20,0.9) 0%, rgba(0,0,0,0.6) 100%);
+    padding: 20px;
+    border-left: 4px solid #ffcc00; /* Золотой акцент */
+    border-radius: 0 8px 8px 0;
     color: white;
-    width: 200px;
+    width: 260px;
     z-index: 10;
-    border: 1px solid #444;
+    box-shadow: -5px 5px 20px rgba(0,0,0,0.5);
 }
 
 #side-ui h3 {
-    margin-bottom: 10px;
-    font-size: 14px;
+    margin-bottom: 15px;
+    font-size: 16px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: center;
+    letter-spacing: 2px;
+    color: #ffcc00;
 }
 
 .stat-container {
-    margin-bottom: 10px;
-    font-size: 12px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.stat-container span {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
 }
 
 .bar-bg {
     width: 100%;
-    height: 8px;
+    height: 6px;
     background: #333;
-    border-radius: 4px;
-    margin-top: 4px;
+    border-radius: 3px;
     overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
 }
 
 .bar-fill {
     height: 100%;
     width: 0%;
-    transition: width 0.5s ease-in-out;
+    transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* === ИЗМЕНЕНИЯ ЗДЕСЬ: Окно текста справа от персонажа === */
+/* Пульсация стресса */
+@keyframes stressPulse {
+    0% { filter: drop-shadow(0 0 2px #ff4757); background: #ff4757; }
+    50% { filter: drop-shadow(0 0 10px #ff4757); background: #ff6b81; }
+    100% { filter: drop-shadow(0 0 2px #ff4757); background: #ff4757; }
+}
+.stress-warning {
+    animation: stressPulse 1s infinite;
+}
+
+/* === ОКНО ДИАЛОГА: Эпичный размах === */
 #dialogue-box {
     position: absolute;
     bottom: 30px;
-    left: 360px; /* Отодвигаем окно вправо, освобождая место для спрайта */
-    width: 570px; /* Задаем ширину, чтобы окно не вылезало за правый край экрана */
-    background: rgba(15, 15, 25, 0.85);
-    border: 1px solid #555;
-    border-radius: 10px;
-    padding: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%; /* Почти на весь экран */
+    min-height: 200px;
+    background: linear-gradient(135deg, rgba(15, 15, 20, 0.95) 0%, rgba(30, 30, 40, 0.85) 100%);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-top: 3px solid #ffcc00;
+    border-radius: 8px;
+    padding: 30px;
+    padding-left: 420px; /* ВАЖНО: Огромный отступ слева, чтобы текст не наслаивался на Нурса! */
     color: white;
-    z-index: 10;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5); /* Добавили тень окну */
+    z-index: 10; /* Окно ПОД персонажем */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
 }
 
 #speaker-name {
-    font-weight: bold;
+    position: absolute;
+    top: -22px; /* Выносим имя за пределы окна (стиль плашки) */
+    left: 420px; /* Начинаем там же, где текст */
+    background: #ffcc00;
+    color: #000;
+    padding: 5px 20px;
+    font-weight: 900;
     font-size: 18px;
-    color: #ffd700;
-    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 -2px 10px rgba(255, 204, 0, 0.3);
 }
 
 #dialogue-text {
-    font-size: 16px;
-    line-height: 1.5;
-    min-height: 50px;
-    margin-bottom: 15px;
+    font-size: 20px; /* Сделали текст крупнее и читабельнее */
+    line-height: 1.6;
+    font-weight: 400;
+    min-height: 60px;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px #000;
 }
 
+/* === КНОПКИ ВЫБОРА === */
 #choices-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .choice-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid #777;
-    padding: 10px;
-    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #ddd;
+    border: 1px solid #555;
+    border-left: 4px solid #555;
+    padding: 12px 20px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 700;
     text-align: left;
     transition: all 0.2s ease;
 }
 
 .choice-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: #fff;
-    transform: translateX(5px);
+    background: rgba(255, 204, 0, 0.15);
+    color: #fff;
+    border-color: #ffcc00;
+    border-left: 8px solid #ffcc00;
+    transform: translateX(10px); /* Кнопка "выезжает" при наведении */
 }
