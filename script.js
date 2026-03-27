@@ -320,3 +320,57 @@ window.onload = () => {
     renderScene("start");
     updateUI();
 };
+
+// URL твоего будущего бэкенда на Render (пока можно использовать localhost для тестов)
+const BACKEND_URL = 'http://localhost:3000/api'; 
+
+// Функция отправки статистики финала
+async function sendFinalStat(choice) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/stats`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ choiceId: choice }) // 'fear' или 'vision'
+        });
+        const data = await response.json();
+        console.log("Глобальная статистика:", data);
+        // Здесь можно написать логику для вывода процентов на экран
+    } catch (err) {
+        console.error("Ошибка отправки статистики", err);
+    }
+}
+
+// Функция отправки результата в Leaderboard
+async function submitToLeaderboard(playerName) {
+    // Высчитываем итоговый EQ score
+    const eqScore = (stats.awareness + stats.empathy + stats.motivation) - stats.stress;
+    
+    try {
+        const response = await fetch(`${BACKEND_URL}/leaderboard`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: playerName, score: eqScore })
+        });
+        const top10 = await response.json();
+        console.log("ТОП 10 Игроков:", top10);
+        // Отрисовать таблицу на экране
+    } catch (err) {
+        console.error("Ошибка лидерборда", err);
+    }
+}
+
+// Отправка комментария
+async function submitComment(playerName, commentText) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/comments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: playerName, text: commentText })
+        });
+        const comments = await response.json();
+        console.log("Живые комментарии:", comments);
+        // Отрисовать бегущую ленту или список
+    } catch (err) {
+        console.error("Ошибка отправки комментария", err);
+    }
+}
