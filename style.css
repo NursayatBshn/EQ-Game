@@ -34,6 +34,43 @@ body {
     transition: background-image 0.8s ease-in-out;
 }
 
+#name-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.92);
+    padding: 24px;
+}
+
+.name-modal {
+    width: min(420px, 100%);
+    background: linear-gradient(135deg, rgba(20, 20, 26, 0.98) 0%, rgba(8, 8, 12, 0.96) 100%);
+    border: 1px solid rgba(255, 204, 0, 0.5);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.name-modal h2 {
+    color: #ffcc00;
+    margin-bottom: 14px;
+    font-size: 26px;
+}
+
+.name-modal input {
+    width: 100%;
+    background: #161616;
+    border: 1px solid #444;
+    color: white;
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
 /* === ПЕРСОНАЖ: Выносим на ПЕРЕДНИЙ план === */
 #character-layer {
     position: absolute;

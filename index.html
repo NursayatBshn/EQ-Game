@@ -9,6 +9,13 @@
 </head>
 <body>
     <div id="game-container">
+        <div id="name-overlay">
+            <div class="name-modal">
+                <h2>Введите имя игрока</h2>
+                <input type="text" id="start-player-name-input" placeholder="Например, Алихан" maxlength="24">
+                <button class="restart-btn" onclick="startGame()">Начать игру</button>
+            </div>
+        </div>
 
         <div id="results-overlay" class="hidden">
             <div class="results-container">

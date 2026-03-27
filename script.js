@@ -1,4 +1,5 @@
 let lastChoice = '';
+let currentPlayerName = '';
 
 // Базовые характеристики (Side UI) - Стартовое состояние
 let stats = {
@@ -329,10 +330,39 @@ function renderScene(sceneId) {
     }
 }
 
-// Старт игры
-window.onload = () => {
+function syncPlayerNameInputs() {
+    const commentNameInput = document.getElementById('player-name-input');
+    if (commentNameInput) {
+        commentNameInput.value = currentPlayerName;
+    }
+}
+
+function startGame() {
+    const startNameInput = document.getElementById('start-player-name-input');
+    const enteredName = startNameInput ? startNameInput.value.trim() : '';
+    currentPlayerName = enteredName || 'Аноним';
+
+    const nameOverlay = document.getElementById('name-overlay');
+    if (nameOverlay) {
+        nameOverlay.classList.add('hidden');
+    }
+
+    syncPlayerNameInputs();
     renderScene("start");
     updateUI();
+}
+
+// Старт игры
+window.onload = () => {
+    const startNameInput = document.getElementById('start-player-name-input');
+    if (startNameInput) {
+        startNameInput.addEventListener('keydown', event => {
+            if (event.key === 'Enter') {
+                startGame();
+            }
+        });
+        startNameInput.focus();
+    }
 };
 
 // URL твоего будущего бэкенда на Render (пока можно использовать localhost для тестов)
@@ -417,7 +447,7 @@ function calculateEQScore() {
 
 // Вызов при переходе к финалу
 function triggerFinalActions() {
-    const playerName = "Nursayat"; 
+    const playerName = currentPlayerName || 'Аноним';
     
     if (lastChoice) {
         sendFinalStat(lastChoice);
@@ -432,7 +462,8 @@ async function showFinalResults() {
     const resultsOverlay = document.getElementById('results-overlay');
     if (dialogueBox) dialogueBox.classList.add('hidden');
     if (resultsOverlay) resultsOverlay.classList.remove('hidden');
-    const playerName = "Nursayat";
+    const playerName = currentPlayerName || 'Аноним';
+    syncPlayerNameInputs();
 
     // 1. Отправляем статистику выбора
     if (lastChoice) {
@@ -523,16 +554,24 @@ function restartGame() {
         motivation: 50
     };
     lastChoice = '';
+    currentPlayerName = '';
     
     // Переключение экранов
     const resultsOverlay = document.getElementById('results-overlay');
     const dialogueBox = document.getElementById('dialogue-box');
+    const nameOverlay = document.getElementById('name-overlay');
+    const startNameInput = document.getElementById('start-player-name-input');
     if (resultsOverlay) resultsOverlay.classList.add('hidden');
     if (dialogueBox) dialogueBox.classList.remove('hidden');
+    if (nameOverlay) nameOverlay.classList.remove('hidden');
+    if (startNameInput) {
+        startNameInput.value = '';
+        startNameInput.focus();
+    }
     
     // Запуск сначала
     updateUI();
-    renderScene("start");
+    syncPlayerNameInputs();
 }
 
 // Ensure this function exists and is spelled correctly
