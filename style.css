@@ -32,27 +32,29 @@ body {
     transition: background-image 0.5s ease-in-out;
 }
 
+/* === ИЗМЕНЕНИЯ ЗДЕСЬ: Персонаж слева === */
 #character-layer {
     position: absolute;
     bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 85%;
+    left: 20px; /* Прижимаем к левому краю с небольшим отступом */
+    height: 90%; /* Сделали спрайт чуть крупнее */
     z-index: 5;
+    /* Мы удалили transform: translateX(-50%); который центрировал его */
 }
 
 #character {
     height: 100%;
     object-fit: contain;
     transition: opacity 0.3s ease;
+    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.5)); /* Добавили легкую тень для объема */
 }
 
-/* Side UI */
+/* Side UI (остается в правом верхнем углу) */
 #side-ui {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     padding: 15px;
     border-radius: 8px;
     color: white;
@@ -89,19 +91,19 @@ body {
     transition: width 0.5s ease-in-out;
 }
 
-/* Диалоговое окно */
+/* === ИЗМЕНЕНИЯ ЗДЕСЬ: Окно текста справа от персонажа === */
 #dialogue-box {
     position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
+    bottom: 30px;
+    left: 360px; /* Отодвигаем окно вправо, освобождая место для спрайта */
+    width: 570px; /* Задаем ширину, чтобы окно не вылезало за правый край экрана */
     background: rgba(15, 15, 25, 0.85);
     border: 1px solid #555;
     border-radius: 10px;
     padding: 20px;
     color: white;
     z-index: 10;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5); /* Добавили тень окну */
 }
 
 #speaker-name {
