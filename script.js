@@ -336,13 +336,17 @@ async function sendFinalStat(choice) {
         const response = await fetch(`${BACKEND_URL}/stats`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ choiceId: choice }) // 'fear' или 'vision'
+            body: JSON.stringify({ choiceId: choice })
         });
+        
+        if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.status}`);
+        }
+
         const data = await response.json();
-        console.log("Глобальная статистика:", data);
-        // Здесь можно написать логику для вывода процентов на экран
+        console.log("Статистика получена:", data);
     } catch (err) {
-        console.error("Ошибка отправки статистики", err);
+        console.error("Не удалось отправить статистику:", err.message);
     }
 }
 
