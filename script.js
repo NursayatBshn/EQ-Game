@@ -457,8 +457,11 @@ function renderComments(data) {
 }
 
 async function handleCommentSubmit() {
-    const name = document.getElementById('player-name-input').value || 'Аноним';
-    const text = document.getElementById('comment-text-input').value;
+    const name = document.getElementById('player-name-input').value;
+    const comment = document.getElementById('comment-text-input').value;
+    
+    console.log("Submit clicked:", name, comment);
+    
     if (!text) return;
 
     const updatedComments = await submitComment(name, text);
