@@ -1,3 +1,5 @@
+let lastChoice = '';
+
 // Базовые характеристики (Side UI) - Стартовое состояние
 let stats = {
     stress: 70,
