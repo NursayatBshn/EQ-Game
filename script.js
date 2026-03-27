@@ -154,7 +154,7 @@ const story = {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_neutral.png", 
         speaker: "Нурс (мысли)",
-        text: "Фух. Сработало. Конфликт исчерпан, можно возвращаться к работе с чистой головой. Status: 200 OK. Когда ты говоришь с людьми по-человечески, они отвечают тем же.",
+        text: "Фух. Сработало. Конфликт исчерпан, можно возвращаться к работе с чистой головой. Когда ты говоришь с людьми по-человечески, они отвечают тем же.",
         choices: [{ text: "Сесть за код", next: "scene_3" }]
     },
 
@@ -203,7 +203,7 @@ const story = {
 
     // --- СЦЕНА 4: Финальный выбор мотивации ---
     "scene_4": {
-        bg: "assets/backgrounds/room_dawn.png",
+        bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_focus.png",
         speaker: "Нурс (мысли)",
         text: "Так, ошибки в роутах исправлены. Осталось дописать последнюю функцию обработки данных. Но силы на исходе... \nНужно найти причину, чтобы не закрыть ноутбук прямо сейчас.",
@@ -213,22 +213,52 @@ const story = {
         ]
     },
 
-    // --- ФИНАЛЫ ---
+    // --- ФИНАЛ: Страх (Стипендия) ---
     "end_fear": {
         bg: "assets/backgrounds/room_parents.png",
-        sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Внутренние мысли Нурса",
-        text: "Так, соберись. Если я завалю этот проект, прощай стипендия. Родители расстроятся, придется экономить на всем. Надо доделать это ради выживания. Пиши, просто пиши!... Проект готов, но Нурс чувствует полное опустошение.",
-        statChanges: { stress: 15, motivation: 20 },
-        choices: [{ text: "Играть заново", next: "start" }]
+        sprite: "assets/sprites/nurs_focus.png",
+        speaker: "Нурс (мысли)",
+        text: "«Так, если завалю — минус стипендия. Придется опять на всем экономить. Просто допишу этот кусок как-нибудь, лишь бы тесты прошли».",
+        statChanges: { stress: 15, motivation: -20 },
+        choices: [{ text: "Запустить билд", next: "end_fear_success" }]
     },
+    "end_fear_success": {
+        bg: "assets/backgrounds/room_parents.png",
+        sprite: "assets/sprites/nurs_tired.png",
+        speaker: "Терминал",
+        text: "> Build finished successfully.\n> Ready for deployment.",
+        choices: [{ text: "Отправить проект", next: "end_fear_epilogue" }]
+    },
+    "end_fear_epilogue": {
+        bg: "assets/backgrounds/room_parents.png",
+        sprite: "assets/sprites/nurs_tired.png",
+        speaker: "Нурс",
+        text: "«Фух. Сдал. Стипендия спасена. Но чувствую себя как выжатый лимон. На код больше смотреть тошно, хочется просто упасть лицом в подушку... Выгорание близко».",
+        choices: [{ text: "Конец игры (Начать заново)", next: "start" }]
+    },
+
+    // --- ФИНАЛ: Видение (Внутренняя мотивация) ---
     "end_vision": {
         bg: "assets/backgrounds/room_career.png",
-        sprite: "assets/sprites/nurs_happy.png", 
-        speaker: "Внутренние мысли Нурса",
-        text: "Этот баг — отличный вызов. Каждая такая решенная задача делает меня круче как бэкенд-разработчика. Я хочу понимать, как это работает, чтобы в будущем создавать реально мощные системы. Погнали!... Проект готов идеально, Нурс на подъеме.",
-        statChanges: { stress: -20, motivation: 50 },
-        choices: [{ text: "Играть заново", next: "start" }]
+        sprite: "assets/sprites/nurs_focus.png",
+        speaker: "Нурс (мысли)",
+        text: "«Окей, этот баг — хорошая практика. Разберусь с роутами нормально, на бэкенде с таким постоянно придется сталкиваться. Надо сделать по уму».",
+        statChanges: { stress: -20, motivation: 40 },
+        choices: [{ text: "Запустить билд", next: "end_vision_success" }]
+    },
+    "end_vision_success": {
+        bg: "assets/backgrounds/room_career.png",
+        sprite: "assets/sprites/nurs_happy.png",
+        speaker: "Терминал",
+        text: "> Build finished successfully.\n> Ready for deployment.",
+        choices: [{ text: "Отправить проект", next: "end_vision_epilogue" }]
+    },
+    "end_vision_epilogue": {
+        bg: "assets/backgrounds/room_career.png",
+        sprite: "assets/sprites/nurs_neutral.png",
+        speaker: "Нурс",
+        text: "«Отлично, ушло. Устал, конечно, но код получился нормальным. По крайней мере, теперь я реально понимаю, как эта логика работает под капотом».",
+        choices: [{ text: "Конец игры (Начать заново)", next: "start" }]
     }
 };
 
