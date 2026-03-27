@@ -269,13 +269,15 @@ function renderScene(sceneId) {
     const scene = story[sceneId];
     if (!scene) return;
 
-    // Исправляем названия для записи выбора
+    // Фиксация выбора для статистики
     if (sceneId === 'end_fear') lastChoice = 'fear';
     if (sceneId === 'end_vision') lastChoice = 'vision';
     
-    // Если дошли до финального эпилога — показываем данные
+    // ВАЖНО: Если это эпилог, через 2 секунды показываем экран результатов
     if (sceneId === 'end_fear_epilogue' || sceneId === 'end_vision_epilogue') {
-        showFinalResults();
+        setTimeout(() => {
+            showFinalResults(); // Эту функцию мы добавим ниже
+        }, 2000);
     }
     
     // Спрайт и анимация появления
@@ -442,8 +444,19 @@ async function showFinalResults() {
 // Функции отрисовки (Helper functions)
 function renderStatsBars(data) {
     const container = document.getElementById('stats-bars');
+    if (!container) return; // Ensure the DOM element exists
     container.innerHTML = '';
+
+    // Check if data is missing or empty to prevent the 'reduce' error
+    if (!data || !Array.isArray(data) || data.length === 0) {
+        container.innerHTML = '<div>Статистика недоступна</div>';
+        return;
+    }
+
     const total = data.reduce((sum, item) => sum + item.count, 0);
+    // Avoid division by zero if total is 0
+    if (total === 0) return;
+
     data.forEach(item => {
         const percent = Math.round((item.count / total) * 100);
         const label = item.choiceId === 'vision' ? 'Путь Видения' : 'Путь Страха';
@@ -461,7 +474,7 @@ async function handleCommentSubmit() {
     const comment = document.getElementById('comment-text-input').value;
     
     console.log("Submit clicked:", name, comment);
-    
+
     if (!text) return;
 
     const updatedComments = await submitComment(name, text);

@@ -9,30 +9,27 @@
 </head>
 <body>
     <div id="game-container">
+        
         <div id="results-overlay" class="hidden">
-            <div class="results-content">
-                <h2 id="final-title">Проект сдан!</h2>
+            <div class="results-container">
+                <h2>Проект сдан! Результаты EQ</h2>
                 <div class="results-grid">
-                    <div class="results-column">
-                        <h3>Глобальный выбор</h3>
-                        <div id="stats-bars">
-                            </div>
-                        <h3>Топ-5 осознанных студентов</h3>
-                        <ol id="leaderboard-list"></ol>
+                    <div class="res-col">
+                        <h3>Топ осознанных (AITU)</h3>
+                        <ul id="leaderboard-list"></ul>
                     </div>
-                    <div class="results-column">
-                        <h3>Советы от выживших</h3>
-                        <div id="comments-display"></div>
-                        <div class="comment-input-area">
-                            <input type="text" id="player-name-input" placeholder="Твоё имя">
-                            <textarea id="comment-text-input" placeholder="Твой совет..."></textarea>
-                            <button onclick="handleCommentSubmit()">Отправить</button>
-                        </div>
+                    <div class="res-col">
+                        <h3>Советы от студентов</h3>
+                        <div id="comments-box"></div>
+                        <input type="text" id="c-name" placeholder="Имя">
+                        <textarea id="c-text" placeholder="Твой совет..."></textarea>
+                        <button onclick="handleCommentSubmit()">Оставить след</button>
                     </div>
                 </div>
-                <button class="choice-btn restart-btn" onclick="location.reload()">В начало</button>
+                <button class="choice-btn" onclick="location.reload()">Играть снова</button>
             </div>
         </div>
+
         <div id="background"></div>
         
         <div id="character-layer">
