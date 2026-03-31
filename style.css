@@ -4,7 +4,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Montserrat', sans-serif; /* Подключаем современный шрифт */
+    font-family: 'Montserrat', sans-serif; /* Use a modern font */
 }
 
 body {
@@ -17,7 +17,7 @@ body {
 
 #game-container {
     position: relative;
-    width: 1280px; /* Делаем разрешение HD */
+    width: 1280px; /* Use an HD layout width */
     height: 720px;
     background-color: #000;
     overflow: hidden;
@@ -71,7 +71,7 @@ body {
     font-size: 16px;
 }
 
-/* === ПЕРСОНАЖ: Выносим на ПЕРЕДНИЙ план === */
+/* === CHARACTER: Bring to the foreground === */
 #character-layer {
     position: absolute;
     bottom: -336px;
@@ -85,18 +85,18 @@ body {
     height: 50%;
     object-fit: contain;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    /* Мощная тень скроет неровности белой обводки */
+    /* A strong shadow hides rough edges in the white outline */
     filter: drop-shadow(15px 15px 25px rgba(0,0,0,0.9)); 
 }
 
-/* === SIDE UI (Шкалы): Стиль киберпанк/Hades === */
+/* === SIDE UI (bars): Cyberpunk/Hades style === */
 #side-ui {
     position: absolute;
     top: 30px;
     right: 30px;
     background: linear-gradient(90deg, rgba(15,15,20,0.9) 0%, rgba(0,0,0,0.6) 100%);
     padding: 20px;
-    border-left: 4px solid #ffcc00; /* Золотой акцент */
+    border-left: 4px solid #ffcc00; /* Gold accent */
     border-radius: 0 8px 8px 0;
     color: white;
     width: 260px;
@@ -140,7 +140,7 @@ body {
     transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Пульсация стресса */
+/* Stress pulse */
 @keyframes stressPulse {
     0% { filter: drop-shadow(0 0 2px #ff4757); background: #ff4757; }
     50% { filter: drop-shadow(0 0 10px #ff4757); background: #ff6b81; }
@@ -150,29 +150,29 @@ body {
     animation: stressPulse 1s infinite;
 }
 
-/* === ОКНО ДИАЛОГА: Эпичный размах === */
+/* === DIALOGUE WINDOW: Large cinematic feel === */
 #dialogue-box {
     position: absolute;
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    width: 95%; /* Почти на весь экран */
+    width: 95%; /* Almost full-screen width */
     min-height: 200px;
     background: linear-gradient(135deg, rgba(15, 15, 20, 0.95) 0%, rgba(30, 30, 40, 0.85) 100%);
     border: 1px solid rgba(255,255,255,0.1);
     border-top: 3px solid #ffcc00;
     border-radius: 8px;
     padding: 30px;
-    padding-left: 420px; /* ВАЖНО: Огромный отступ слева, чтобы текст не наслаивался на Нурса! */
+    padding-left: 420px; /* IMPORTANT: Large left padding keeps text off Nurs */
     color: white;
-    z-index: 10; /* Окно ПОД персонажем */
+    z-index: 10; /* Window sits UNDER the character */
     box-shadow: 0 15px 40px rgba(0,0,0,0.8);
 }
 
 #speaker-name {
     position: absolute;
-    top: -22px; /* Выносим имя за пределы окна (стиль плашки) */
-    left: 420px; /* Начинаем там же, где текст */
+    top: -22px; /* Push the name outside the window for a label effect */
+    left: 420px; /* Start at the same horizontal position as the text */
     background: #ffcc00;
     color: #000;
     padding: 5px 20px;
@@ -185,7 +185,7 @@ body {
 }
 
 #dialogue-text {
-    font-size: 20px; /* Сделали текст крупнее и читабельнее */
+    font-size: 20px; /* Make the text larger and easier to read */
     line-height: 1.6;
     font-weight: 400;
     min-height: 60px;
@@ -193,7 +193,7 @@ body {
     text-shadow: 1px 1px 2px #000;
 }
 
-/* === КНОПКИ ВЫБОРА === */
+/* === CHOICE BUTTONS === */
 #choices-container {
     display: flex;
     flex-direction: column;
@@ -219,7 +219,7 @@ body {
     color: #fff;
     border-color: #ffcc00;
     border-left: 8px solid #ffcc00;
-    transform: translateX(10px); /* Кнопка "выезжает" при наведении */
+    transform: translateX(10px); /* Button slides out on hover */
 }
 
 .final-results-overlay {
@@ -378,9 +378,9 @@ body {
     color: #f5f5f5;
 }
 
-.leaderboard-row:nth-child(1) { color: #ffd700; font-size: 16px; font-weight: bold; } /* Золото */
-.leaderboard-row:nth-child(2) { color: #c0c0c0; } /* Серебро */
-.leaderboard-row:nth-child(3) { color: #cd7f32; } /* Бронза */
+.leaderboard-row:nth-child(1) { color: #ffd700; font-size: 16px; font-weight: bold; } /* Gold */
+.leaderboard-row:nth-child(2) { color: #c0c0c0; } /* Silver */
+.leaderboard-row:nth-child(3) { color: #cd7f32; } /* Bronze */
 
 .loading-text {
     text-align: center;

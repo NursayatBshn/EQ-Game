@@ -1,7 +1,7 @@
 let lastChoice = '';
 let currentPlayerName = '';
 
-// Базовые характеристики (Side UI) - Стартовое состояние
+// Base stats (Side UI) - starting state
 let stats = {
     stress: 70,
     awareness: 50,
@@ -9,7 +9,7 @@ let stats = {
     motivation: 50
 };
 
-// Функция обновления шкал на экране с анимацией
+// Update the on-screen bars with animation
 function updateUI() {
     const types = ['stress', 'awareness', 'empathy', 'motivation'];
     types.forEach(type => {
@@ -18,7 +18,7 @@ function updateUI() {
         if (bar) bar.style.width = stats[type] + '%';
         if (valText) valText.innerText = stats[type] + '%';
 
-        // Добавляем пульсацию для высокого стресса
+        // Add a pulse effect for high stress
         if (type === 'stress' && stats.stress > 80 && bar) {
             bar.classList.add('stress-warning');
         } else if (type === 'stress' && bar) {
@@ -27,262 +27,262 @@ function updateUI() {
     });
 }
 
-// === ПОЛНЫЙ СЦЕНАРИЙ ИГРЫ (интеграция из Word) ===
+// === FULL GAME SCRIPT ===
 const story = {
     "start": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Нурс (мысли)",
-        text: "Этот Node.js меня доконает... \nПочему запрос возвращает undefined?",
-        choices: [{ text: "Далее", next: "scene_1_noise" }]
+        speaker: "Nurs (thoughts)",
+        text: "This Node.js is going to finish me off...\nWhy is the request returning undefined?",
+        choices: [{ text: "Next", next: "scene_1_noise" }]
     },
     
     "scene_1_noise": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Шум из коридора",
-        text: "ДА КУДА ТЫ ФЛЕШКУ КИДАЕШЬ?! ЗАХОДИ С ПЛАНТА!",
-        choices: [{ text: "Далее", next: "scene_1_choice" }]
+        speaker: "Noise from the hallway",
+        text: "WHY DID YOU THROW THE FLASH THERE?! PUSH FROM SITE!",
+        choices: [{ text: "Next", next: "scene_1_choice" }]
     },
     "scene_1_noise_1": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Нурс (мысли)",
-        text: "Баг в коде, завтра экзамен по дискретке, а тут еще этот шум из коридора...",
-        choices: [{ text: "Далее", next: "scene_1_choice" }]
+        speaker: "Nurs (thoughts)",
+        text: "There's a bug in the code, I have a discrete math exam tomorrow, and now there's this noise in the hallway...",
+        choices: [{ text: "Next", next: "scene_1_choice" }]
     },
     "scene_1_choice": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_angry.png", 
-        speaker: "Нурс (мысли)",
-        text: "Баг в коде, завтра экзамен по дискретке, а тут еще этот шум из коридора...",
+        speaker: "Nurs (thoughts)",
+        text: "There's a bug in the code, I have a discrete math exam tomorrow, and now there's this noise in the hallway...",
         choices: [
-            { text: "[Агрессия] 'ТИХО! Вы что, совесть потеряли?'", next: "scene_2_1" },
-            { text: "[Игнор] Надеть наушники и продолжить", next: "scene_2_2" },
-            { text: "[Спокойно решить] Выйти и поговорить", next: "scene_2_3" }
+            { text: "[Aggression] 'QUIET! Have you lost your minds?'", next: "scene_2_1" },
+            { text: "[Ignore] Put on headphones and keep going", next: "scene_2_2" },
+            { text: "[Handle it calmly] Go out and talk", next: "scene_2_3" }
         ]
     },
 
-    // --- ВЕТКА 2.1: Агрессия ---
+    // --- BRANCH 2.1: Aggression ---
     "scene_2_1": {
-        bg: "assets/backgrounds/room_alikhan.png", // Геймерская комната соседа
+        bg: "assets/backgrounds/room_alikhan.png", // Neighbor's gaming room
         sprite: "assets/sprites/nurs_angry.png",
-        speaker: "Нурс (крича)",
-        text: "ТИХО! Вы что, вообще совесть потеряли? Люди спят, а мне проект сдавать! Я сейчас коменданту пойду и на всех рапорт напишу!",
+        speaker: "Nurs (yelling)",
+        text: "QUIET! Have you completely lost your minds? People are trying to sleep, and I have a project to submit! I'll go to the dorm supervisor right now and file a report on all of you!",
         statChanges: { stress: 25, awareness: -30, empathy: -20 },
-        choices: [{ text: "Ждать ответа", next: "scene_2_1_reaction" }]
+        choices: [{ text: "Wait for an answer", next: "scene_2_1_reaction" }]
     },
     "scene_2_1_reaction": {
         bg: "assets/backgrounds/room_alikhan.png",
-        sprite: "assets/sprites/alikhan_angry.png", // Алихан раздражен/агрессивен
-        speaker: "Алихан (сосед)",
-        text: "Ой, гляньте, староста проснулся. Че ты сразу угрожать начинаешь? Сказать нормально нельзя было?",
-        choices: [{ text: "Хлопнуть дверью и уйти", next: "scene_2_1_return" }]
+        sprite: "assets/sprites/alikhan_angry.png", // Alikhan is irritated/aggressive
+        speaker: "Alikhan (roommate)",
+        text: "Wow, look who woke up, the class rep. Why do you jump straight to threats? Couldn't you just say it normally?",
+        choices: [{ text: "Slam the door and leave", next: "scene_2_1_return" }]
     },
     "scene_2_1_return": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_panic.png", 
-        speaker: "Нурс (мысли)",
-        text: "Сердце колотится, руки трясутся. Наорал, а легче не стало. Теперь точно не смогу сосредоточиться на коде...",
-        choices: [{ text: "Пытаться кодить дальше...", next: "scene_3" }]
+        speaker: "Nurs (thoughts)",
+        text: "My heart is pounding, my hands are shaking. I yelled, but it didn't make me feel any better. Now I definitely won't be able to focus on the code...",
+        choices: [{ text: "Try to keep coding...", next: "scene_3" }]
     },
 
-    // --- ВЕТКА 2.2: Игнор ---
+    // --- BRANCH 2.2: Ignore ---
     "scene_2_2": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Нурс (мысли)",
-        text: "Просто игнорируй...",
+        speaker: "Nurs (thoughts)",
+        text: "Just ignore it...",
         statChanges: { stress: 15, awareness: -10 },
-        choices: [{ text: "Прошло 10 минут...", next: "scene_2_2_thoughts" }]
+        choices: [{ text: "10 minutes later...", next: "scene_2_2_thoughts" }]
     },
     "scene_2_2_thoughts": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Нурс (мысли)",
-        text: "Черт, я три раза перечитал одну и ту же строчку. Злость копится, я чувствую, как закипаю.",
-        choices: [{ text: "Далее", next: "scene_2_2_escalation" }]
+        speaker: "Nurs (thoughts)",
+        text: "Damn, I've read the same line three times. The anger is building up - I can feel myself boiling over.",
+        choices: [{ text: "Next", next: "scene_2_2_escalation" }]
     },
     "scene_2_2_escalation": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Голос Алихана (приглушенно)",
-        text: "ДА ТЫ КРЫСА! КРЫСА НА МИДУ! ХА-ХА-ХА!",
+        speaker: "Alikhan's voice (muffled)",
+        text: "YOU RAT! MID RAT! HA-HA-HA!",
         choices: [
-            { text: "[Сорваться] Вылететь в коридор", next: "scene_2_2_angry" },
-            { text: "[Сдаться] Я слишком устал...", next: "scene_2_2_1" }
+            { text: "[Lose it] Storm into the hallway", next: "scene_2_2_angry" },
+            { text: "[Give up] I'm too tired...", next: "scene_2_2_1" }
         ]
     },
     "scene_2_2_angry": {
         bg: "assets/backgrounds/room_alikhan.png",
         sprite: "assets/sprites/nurs_angry.png",
-        speaker: "Нурс (срываясь)",
-        text: "ТИХО! Я сейчас коменданту донесу, если не замолкнете! Я думал, вы сами поймете и успокоитесь, но вы продолжаете!",
+        speaker: "Nurs (snapping)",
+        text: "QUIET! I'll report you to the dorm supervisor if you don't shut up! I thought you'd figure it out yourselves and calm down, but you keep going!",
         statChanges: { stress: 20, awareness: -20 },
-        choices: [{ text: "Выслушать Алихана", next: "scene_2_1_reaction" }] // Перекидывает на реакцию агрессии
+        choices: [{ text: "Hear Alikhan out", next: "scene_2_1_reaction" }] // Redirects to the aggression reaction
     },
     "scene_2_2_1": {
         bg: "assets/backgrounds/room_dark.png",
         sprite: "assets/sprites/nurs_tired.png", 
-        speaker: "Нурс (мысли)",
-        text: "Всё равно ничего не получится... Я слишком устал. Этот код бессмысленен, экзамен не сдать... Мозг просто отказывается думать. Будь что будет.",
+        speaker: "Nurs (thoughts)",
+        text: "Nothing is going to work anyway... I'm too tired. This code is pointless, I won't pass the exam... My brain just refuses to think. Whatever happens, happens.",
         statChanges: { stress: 20, motivation: -50 }, 
-        choices: [{ text: "Закрыть ноутбук", next: "scene_3_1" }] 
+        choices: [{ text: "Close the laptop", next: "scene_3_1" }] 
     },
 
-    // --- ВЕТКА 2.3: Спокойное решение (Золотой путь) ---
+    // --- BRANCH 2.3: Calm solution (golden path) ---
     "scene_2_3": {
-        bg: "assets/backgrounds/room_alikhan.png", // Комната соседей
+        bg: "assets/backgrounds/room_alikhan.png", // Roommates' room
         sprite: "assets/sprites/nurs_neutral.png", 
-        speaker: "Нурс (спокойно)",
-        text: "Алихан, привет. Слушай, мешаешь Максату спать, а мне сосредоточиться на проекте. Надень наушники, пожалуйста, катка же тише от этого не станет.",
+        speaker: "Nurs (calmly)",
+        text: "Alikhan, hey. You're keeping Maksat awake and making it hard for me to focus on the project. Please put on your headphones - the match won't get any quieter without them.",
         statChanges: { stress: -30, awareness: 30, empathy: 40 },
-        choices: [{ text: "Смотреть реакцию Алихана", next: "scene_2_3_reaction" }]
+        choices: [{ text: "See Alikhan's reaction", next: "scene_2_3_reaction" }]
     },
     "scene_2_3_reaction": {
         bg: "assets/backgrounds/room_alikhan.png",
-        sprite: "assets/sprites/alikhan_guilty.png", // Алихан смущен/чувствует вину
-        speaker: "Алихан",
-        text: "Ой, сорян, Нурс! Заигрались, реально. Сейчас сделаю.",
-        choices: [{ text: "Посмотреть на Максата", next: "scene_2_3_maksat" }]
+        sprite: "assets/sprites/alikhan_guilty.png", // Alikhan feels embarrassed/guilty
+        speaker: "Alikhan",
+        text: "Oh, sorry, Nurs! We got carried away, seriously. I'll fix it right now.",
+        choices: [{ text: "Look over at Maksat", next: "scene_2_3_maksat" }]
     },
     "scene_2_3_maksat": {
         bg: "assets/backgrounds/room_alikhan.png",
-        sprite: "assets/sprites/maksat.png", // Максат рад, что его спасли
-        speaker: "Максат (сосед)",
-        text: "Рахмет, Нурс, реально спас мой сон.",
-        choices: [{ text: "Вернуться в свою комнату", next: "scene_2_3_return" }]
+        sprite: "assets/sprites/maksat.png", // Maksat is glad he was helped
+        speaker: "Maksat (roommate)",
+        text: "Thanks, Nurs, you seriously saved my sleep.",
+        choices: [{ text: "Go back to your room", next: "scene_2_3_return" }]
     },
     "scene_2_3_return": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_neutral.png", 
-        speaker: "Нурс (мысли)",
-        text: "Фух. Сработало. Конфликт исчерпан, можно возвращаться к работе с чистой головой. Когда ты говоришь с людьми по-человечески, они отвечают тем же.",
-        choices: [{ text: "Сесть за код", next: "scene_3" }]
+        speaker: "Nurs (thoughts)",
+        text: "Whew. It worked. The conflict is over, and I can get back to work with a clear head. When you talk to people like a human being, they answer in kind.",
+        choices: [{ text: "Sit back down to code", next: "scene_3" }]
     },
 
-    // --- СЦЕНА 3: Внутренний выбор ---
+    // --- SCENE 3: Internal choice ---
     "scene_3": {
         bg: "assets/backgrounds/room_dark.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Нурс (мысли)",
-        text: "Тишина - это хорошо. Но глаза уже слипаются. До дедлайна пара часов. Если лягу сейчас - могу не проснуться вовремя. Если останусь - боюсь наделать еще больше ошибок в логике. Что делать?.",
+        speaker: "Nurs (thoughts)",
+        text: "Silence is good. But my eyes are already closing. The deadline is in a couple of hours. If I go to sleep now, I might not wake up in time. If I stay up, I'm afraid I'll make even more logic mistakes. What do I do?",
         choices: [
-            { text: "Лечь спать", next: "scene_3_1" },
-            { text: "Завершить проект", next: "scene_4" }
+            { text: "Go to sleep", next: "scene_3_1" },
+            { text: "Finish the project", next: "scene_4" }
         ]
     },
 
-    // --- СЦЕНА 3.1: Петля Провала (Кошмар) ---
+    // --- SCENE 3.1: Failure loop (nightmare) ---
     "scene_3_1": {
         bg: "assets/backgrounds/nightmare_aitu.png",
         sprite: "assets/sprites/professor.png", 
-        speaker: "Преподаватель",
-        text: "Башан Нурсаят, давайте, запускайте ваш проект. Мы ждем.",
-        choices: [{ text: "Запустить код...", next: "scene_3_1_panic" }]
+        speaker: "Professor",
+        text: "Bashan Nursayat, go ahead, run your project. We're waiting.",
+        choices: [{ text: "Run the code...", next: "scene_3_1_panic" }]
     },
     "scene_3_1_panic": {
         bg: "assets/backgrounds/nightmare_aitu.png",
         sprite: "assets/sprites/nurs_panic.png", 
-        speaker: "Нурс (мысли)",
-        text: "Нет, нет, там что, ошибка?! Надо было дописать ту функцию...",
-        choices: [{ text: "Смотреть на экран", next: "scene_3_1_fail" }]
+        speaker: "Nurs (thoughts)",
+        text: "No, no, is that an error?! I should have finished that function...",
+        choices: [{ text: "Look at the screen", next: "scene_3_1_fail" }]
     },
     "scene_3_1_fail": {
         bg: "assets/backgrounds/nightmare_aitu.png",
         sprite: "assets/sprites/nurs_panic.png",
-        speaker: "Система",
-        text: "ВНИМАНИЕ: ВЫ ПОТЕРЯЛИ СТИПЕНДИЮ.",
+        speaker: "System",
+        text: "WARNING: YOU LOST YOUR SCHOLARSHIP.",
         statChanges: { stress: 20 },
-        choices: [{ text: "НЕТ! (Проснуться)", next: "scene_3_1_wakeup" }]
+        choices: [{ text: "NO! (Wake up)", next: "scene_3_1_wakeup" }]
     },
     "scene_3_1_wakeup": {
         bg: "assets/backgrounds/room_dark.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Нурс (просыпаясь)",
-        text: "Нет! Это был просто кошмар?.. Спать нельзя. Придется кодить.",
-        choices: [{ text: "Открыть IDE", next: "scene_4" }] 
+        speaker: "Nurs (waking up)",
+        text: "No! It was just a nightmare?.. I can't sleep. I have to keep coding.",
+        choices: [{ text: "Open the IDE", next: "scene_4" }] 
     },
 
-    // --- СЦЕНА 4: Финальный выбор мотивации ---
+    // --- SCENE 4: Final motivation choice ---
     "scene_4": {
         bg: "assets/backgrounds/room_night.png",
         sprite: "assets/sprites/nurs_focus.png",
-        speaker: "Нурс (мысли)",
-        text: "Так, ошибки в роутах исправлены. Осталось дописать последнюю функцию обработки данных. Но силы на исходе... \nНужно найти причину, чтобы не закрыть ноутбук прямо сейчас.",
+        speaker: "Nurs (thoughts)",
+        text: "Okay, the route errors are fixed. I only need to finish the last data-processing function. But I'm running out of energy...\nI need a reason not to close the laptop right now.",
         choices: [
-            { text: "Ради стипендии и выживания", next: "end_fear" },
-            { text: "Ради будущей карьеры бэкендера", next: "end_vision" }
+            { text: "For the scholarship and survival", next: "end_fear" },
+            { text: "For my future backend career", next: "end_vision" }
         ]
     },
 
-    // --- ФИНАЛ: Страх (Стипендия) ---
+    // --- ENDING: Fear (scholarship) ---
     "end_fear": {
         bg: "assets/backgrounds/room_parents.png",
         sprite: "assets/sprites/nurs_focus.png",
-        speaker: "Нурс (мысли)",
-        text: "«Так, если завалю — минус стипендия. Придется опять на всем экономить. Просто допишу этот кусок как-нибудь, лишь бы тесты прошли».",
+        speaker: "Nurs (thoughts)",
+        text: "Okay, if I fail, there goes the scholarship. I'll have to save on everything again. I'll just finish this piece somehow, as long as the tests pass.",
         statChanges: { stress: 15, motivation: -20 },
-        choices: [{ text: "Запустить билд", next: "end_fear_success" }]
+        choices: [{ text: "Run the build", next: "end_fear_success" }]
     },
     "end_fear_success": {
         bg: "assets/backgrounds/room_parents.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Терминал",
+        speaker: "Terminal",
         text: "> Build finished successfully.\n> Ready for deployment.",
-        choices: [{ text: "Отправить проект", next: "end_fear_epilogue" }]
+        choices: [{ text: "Submit the project", next: "end_fear_epilogue" }]
     },
     "end_fear_epilogue": {
         bg: "assets/backgrounds/room_parents.png",
         sprite: "assets/sprites/nurs_tired.png",
-        speaker: "Нурс",
-        text: "«Фух. Сдал. Стипендия спасена. Но чувствую себя как выжатый лимон. На код больше смотреть тошно, хочется просто упасть лицом в подушку... Выгорание близко».",
-        choices: [{ text: "Конец игры (Начать заново)", next: "start" }]
+        speaker: "Nurs",
+        text: "Whew. I submitted it. The scholarship is safe. But I feel completely drained. I can't stand looking at code anymore, I just want to faceplant into my pillow... Burnout is close.",
+        choices: [{ text: "End game (Start over)", next: "start" }]
     },
 
-    // --- ФИНАЛ: Видение (Внутренняя мотивация) ---
+    // --- ENDING: Vision (internal motivation) ---
     "end_vision": {
         bg: "assets/backgrounds/room_career.png",
         sprite: "assets/sprites/nurs_focus.png",
-        speaker: "Нурс (мысли)",
-        text: "«Окей, этот баг — хорошая практика. Разберусь с роутами нормально, на бэкенде с таким постоянно придется сталкиваться. Надо сделать по уму».",
+        speaker: "Nurs (thoughts)",
+        text: "Okay, this bug is good practice. I'll sort out the routes properly - in backend work I'll run into this all the time. I need to do it the right way.",
         statChanges: { stress: -20, motivation: 40 },
-        choices: [{ text: "Запустить билд", next: "end_vision_success" }]
+        choices: [{ text: "Run the build", next: "end_vision_success" }]
     },
     "end_vision_success": {
         bg: "assets/backgrounds/room_career.png",
         sprite: "assets/sprites/nurs_happy.png",
-        speaker: "Терминал",
+        speaker: "Terminal",
         text: "> Build finished successfully.\n> Ready for deployment.",
-        choices: [{ text: "Отправить проект", next: "end_vision_epilogue" }]
+        choices: [{ text: "Submit the project", next: "end_vision_epilogue" }]
     },
     "end_vision_epilogue": {
         bg: "assets/backgrounds/room_career.png",
         sprite: "assets/sprites/nurs_neutral.png",
-        speaker: "Нурс",
-        text: "«Отлично, ушло. Устал, конечно, но код получился нормальным. По крайней мере, теперь я реально понимаю, как эта логика работает под капотом».",
-        choices: [{ text: "Конец игры (Начать заново)", next: "start" }]
+        speaker: "Nurs",
+        text: "Nice, it went through. I'm tired, sure, but the code turned out solid. At least now I actually understand how this logic works under the hood.",
+        choices: [{ text: "End game (Start over)", next: "start" }]
     }
 };
 
-// Функция отрисовки сцены
+// Render a scene
 function renderScene(sceneId) {
     const scene = story[sceneId];
     if (!scene) return;
 
-    // Фиксация выбора для статистики
+    // Save the choice for statistics
     if (sceneId === 'end_fear') lastChoice = 'fear';
     if (sceneId === 'end_vision') lastChoice = 'vision';
     
-    // ПЕРЕХОД К ФИНАЛУ: Если дошли до эпилога, активируем финальные действия
+    // If we reached an epilogue, trigger the final results flow
     if (sceneId === 'end_fear_epilogue' || sceneId === 'end_vision_epilogue') {
-        // Даем игроку 2 секунды дочитать текст, затем показываем результаты
+        // Give the player 2 seconds to finish reading, then show the results
         setTimeout(() => {
             showFinalResults();
         }, 2000);
     }
 
-    // Спрайт и анимация появления
+    // Sprite and fade-in animation
     const charLayer = document.getElementById('character-layer');
     if (charLayer) {
         charLayer.style.opacity = '0';
@@ -302,13 +302,13 @@ function renderScene(sceneId) {
         }
     }, 150);
 
-    // Текст
+    // Text
     const speakerEl = document.getElementById('speaker-name');
     const textEl = document.getElementById('dialogue-text');
     if (speakerEl) speakerEl.innerText = scene.speaker;
     if (textEl) textEl.innerText = scene.text;
 
-    // Статы
+    // Stats
     if (scene.statChanges) {
         for (let key in scene.statChanges) {
             stats[key] = Math.max(0, Math.min(100, stats[key] + scene.statChanges[key]));
@@ -316,7 +316,7 @@ function renderScene(sceneId) {
         updateUI();
     }
 
-    // Кнопки
+    // Choice buttons
     const choicesContainer = document.getElementById('choices-container');
     if (choicesContainer) {
         choicesContainer.innerHTML = '';
@@ -340,7 +340,7 @@ function syncPlayerNameInputs() {
 function startGame() {
     const startNameInput = document.getElementById('start-player-name-input');
     const enteredName = startNameInput ? startNameInput.value.trim() : '';
-    currentPlayerName = enteredName || 'Аноним';
+    currentPlayerName = enteredName || 'Anonymous';
 
     const nameOverlay = document.getElementById('name-overlay');
     if (nameOverlay) {
@@ -352,7 +352,7 @@ function startGame() {
     updateUI();
 }
 
-// Старт игры
+// Game start
 window.onload = () => {
     const startNameInput = document.getElementById('start-player-name-input');
     if (startNameInput) {
@@ -365,10 +365,10 @@ window.onload = () => {
     }
 };
 
-// URL твоего будущего бэкенда на Render (пока можно использовать localhost для тестов)
+// Future backend URL on Render (localhost can still be used for testing)
 const BACKEND_URL = 'https://eq-game-tb0x.onrender.com/api';
 
-// Функция отправки статистики финала
+// Send final choice statistics
 async function sendFinalStat(choice) {
     try {
         const response = await fetch(`${BACKEND_URL}/stats`, {
@@ -378,21 +378,21 @@ async function sendFinalStat(choice) {
         });
         
         if (!response.ok) {
-            throw new Error(`Ошибка сервера: ${response.status}`);
+            throw new Error(`Server error: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log("Статистика получена:", data);
+        console.log('Statistics received:', data);
         return data;
     } catch (err) {
-        console.error("Не удалось отправить статистику:", err.message);
+        console.error('Failed to send statistics:', err.message);
         return [];
     }
 }
 
-// Функция отправки результата в Leaderboard
+// Submit the result to the leaderboard
 async function submitToLeaderboard(playerName) {
-    // Высчитываем итоговый EQ score
+    // Calculate the final EQ score
     const eqScore = (stats.awareness + stats.empathy + stats.motivation) - stats.stress;
     
     try {
@@ -402,15 +402,15 @@ async function submitToLeaderboard(playerName) {
             body: JSON.stringify({ name: playerName, score: eqScore })
         });
         const top10 = await response.json();
-        console.log("ТОП 10 Игроков:", top10);
+        console.log('Top 10 players:', top10);
         return top10;
     } catch (err) {
-        console.error("Ошибка лидерборда", err);
+        console.error('Leaderboard error', err);
         return [];
     }
 }
 
-// Отправка комментария
+// Submit a comment
 async function submitComment(playerName, commentText) {
     try {
         const response = await fetch(`${BACKEND_URL}/comments`, {
@@ -419,10 +419,10 @@ async function submitComment(playerName, commentText) {
             body: JSON.stringify({ name: playerName, text: commentText })
         });
         const comments = await response.json();
-        console.log("Живые комментарии:", comments);
+        console.log('Live comments:', comments);
         return comments;
     } catch (err) {
-        console.error("Ошибка отправки комментария", err);
+        console.error('Comment submission error', err);
         return [];
     }
 }
@@ -431,41 +431,41 @@ async function loadComments() {
     try {
         const response = await fetch(`${BACKEND_URL}/comments`);
         const data = await response.json();
-        console.log("Комментарии загружены:", data);
+        console.log('Comments loaded:', data);
         return data;
     } catch (err) {
-        console.error("Ошибка загрузки комментариев:", err);
+        console.error('Comment loading error:', err);
         return [];
     }
 }
 
-// Расчет итогового EQ счета
+// Calculate the final EQ score
 function calculateEQScore() {
-    // Формула: (Осознанность + Эмпатия + Мотивация) - Стресс
+    // Formula: (Awareness + Empathy + Motivation) - Stress
     return (stats.awareness + stats.empathy + stats.motivation) - stats.stress;
 }
 
-// Вызов при переходе к финалу
+// Trigger final actions
 function triggerFinalActions() {
-    const playerName = currentPlayerName || 'Аноним';
+    const playerName = currentPlayerName || 'Anonymous';
     
     if (lastChoice) {
         sendFinalStat(lastChoice);
     }
     submitToLeaderboard(playerName);
-    loadComments(); // Теперь эта функция существует
+    loadComments(); // This function now exists
 }
 
-// Показываем оверлей и тянем данные
+// Show the overlay and fetch data
 async function showFinalResults() {
     const dialogueBox = document.getElementById('dialogue-box');
     const resultsOverlay = document.getElementById('results-overlay');
     if (dialogueBox) dialogueBox.classList.add('hidden');
     if (resultsOverlay) resultsOverlay.classList.remove('hidden');
-    const playerName = currentPlayerName || 'Аноним';
+    const playerName = currentPlayerName || 'Anonymous';
     syncPlayerNameInputs();
 
-    // 1. Отправляем статистику выбора
+    // 1. Send choice statistics
     if (lastChoice) {
         const stats = await sendFinalStat(lastChoice);
         renderStatsBars(stats);
@@ -473,16 +473,16 @@ async function showFinalResults() {
 
     await submitToLeaderboard(playerName);
 
-    // 2. Грузим лидерборд
+    // 2. Load the leaderboard
     const lbData = await (await fetch(`${BACKEND_URL}/leaderboard`)).json();
     renderLeaderboard(lbData);
 
-    // 3. Грузим комментарии
+    // 3. Load comments
     const comments = await (await fetch(`${BACKEND_URL}/comments`)).json();
     renderComments(comments);
 }
 
-// Функции отрисовки (Helper functions)
+// Render helpers
 function renderStatsBars(data) {
     const container = document.getElementById('stats-bars');
     if (!container) return; // Ensure the DOM element exists
@@ -490,7 +490,7 @@ function renderStatsBars(data) {
 
     // Check if data is missing or empty to prevent the 'reduce' error
     if (!data || !Array.isArray(data) || data.length === 0) {
-        container.innerHTML = '<div>Статистика недоступна</div>';
+        container.innerHTML = '<div>Statistics unavailable</div>';
         return;
     }
 
@@ -500,7 +500,7 @@ function renderStatsBars(data) {
 
     data.forEach(item => {
         const percent = Math.round((item.count / total) * 100);
-        const label = item.choiceId === 'vision' ? 'Путь Видения' : 'Путь Страха';
+        const label = item.choiceId === 'vision' ? 'Vision Path' : 'Fear Path';
         container.innerHTML += `<div>${label}: ${percent}% <div class="bar-bg"><div class="bar-fill" style="width:${percent}%; background:#ffcc00"></div></div></div>`;
     });
 }
@@ -509,7 +509,7 @@ function renderComments(data) {
     const container = document.getElementById('comments-display');
     if (!container) return;
     if (!Array.isArray(data) || data.length === 0) {
-        container.innerHTML = '<div class="comment-item">Комментариев пока нет</div>';
+        container.innerHTML = '<div class="comment-item">No comments yet</div>';
         return;
     }
     container.innerHTML = data.map(c => `<div class="comment-item"><strong>${c.name}:</strong> ${c.text}</div>`).join('');
@@ -525,7 +525,7 @@ async function handleCommentSubmit() {
         return;
     }
 
-    const name = nameEl.value.trim() || 'Аноним';
+    const name = nameEl.value.trim() || 'Anonymous';
     const comment = commentEl.value.trim();
     
     if (!comment) return;
@@ -535,7 +535,7 @@ async function handleCommentSubmit() {
     commentEl.value = '';
 }
 
-// Показывает блок с результатами и скрывает игру
+// Show the results block and hide the game
 function showFinalOverlay() {
     const gameUI = document.getElementById('dialogue-box');
     const resultsUI = document.getElementById('results-overlay');
@@ -544,9 +544,9 @@ function showFinalOverlay() {
     if (resultsUI) resultsUI.classList.remove('hidden');
 }
 
-// Обновленная функция рестарта
+// Updated restart function
 function restartGame() {
-    // Сброс всех характеристик
+    // Reset all stats
     stats = {
         stress: 70,
         awareness: 50,
@@ -556,7 +556,7 @@ function restartGame() {
     lastChoice = '';
     currentPlayerName = '';
     
-    // Переключение экранов
+    // Switch screens
     const resultsOverlay = document.getElementById('results-overlay');
     const dialogueBox = document.getElementById('dialogue-box');
     const nameOverlay = document.getElementById('name-overlay');
@@ -569,7 +569,7 @@ function restartGame() {
         startNameInput.focus();
     }
     
-    // Запуск сначала
+    // Start over
     updateUI();
     syncPlayerNameInputs();
 }
@@ -579,7 +579,7 @@ function renderLeaderboard(data) {
     const container = document.getElementById('leaderboard-container');
     if (!container) return;
     if (!Array.isArray(data) || data.length === 0) {
-        container.innerHTML = '<div class="lb-entry">Пока нет результатов</div>';
+        container.innerHTML = '<div class="lb-entry">No results yet</div>';
         return;
     }
 
